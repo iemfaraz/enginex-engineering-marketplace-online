@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" href="./favicon.svg">
+<title>ENGINEX — Engineering Marketplace & Jobs Platform</title>
+<meta name="description" content="ENGINEX engineering marketplace and jobs platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1D37;--navy2:#12305a;--gold:#D4A017;--gold-d:#b6870f;--blue:#1D4ED8;--blue-l:#e8effe;
+  --bg:#F5F7FB;--card:#fff;--ink:#0F1B2D;--mut:#5B6B82;--line:#E2E8F1;--ok:#117a45;--ok-bg:#e6f6ee;
+  --warn:#9a6a00;--warn-bg:#fff4d6;--err:#b42318;--err-bg:#fdecea;--r:12px;
+  --font:Inter,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #f2c94c;outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{margin:0;line-height:1.2;letter-spacing:-.01em;color:var(--navy)}
+h1{font-size:clamp(30px,4.6vw,50px);font-weight:800}
+h2{font-size:clamp(22px,2.6vw,30px);font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.muted{color:var(--mut)}
+.small{font-size:13px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.grow{flex:1}
+.stack>*+*{margin-top:12px}
+.hide{display:none!important}
+.only-s{display:none}
+
+/* header */
+header.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.nav{display:flex;align-items:center;gap:18px;height:66px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--navy);letter-spacing:.02em}
+.brand:hover{text-decoration:none}
+.brand svg{width:34px;height:34px}
+.links{display:flex;gap:2px;margin-left:12px}
+.links a{padding:8px 12px;border-radius:8px;color:var(--ink);font-weight:500;font-size:14.5px}
+.links a:hover{background:var(--bg);text-decoration:none}
+.links a.on{color:var(--blue);background:var(--blue-l)}
+.nav .right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+.badge{display:inline-flex;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;align-items:center;justify-content:center;margin-left:4px}
+.menu{position:relative}
+.menu-panel{position:absolute;right:0;top:46px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(10,29,55,.14);min-width:210px;padding:6px;display:none}
+.menu.open .menu-panel{display:block}
+.menu-panel a,.menu-panel button{display:flex;width:100%;text-align:left;padding:9px 12px;border-radius:8px;color:var(--ink);background:none;border:0;cursor:pointer;font-size:14px;align-items:center;justify-content:space-between}
+.menu-panel a:hover,.menu-panel button:hover{background:var(--bg);text-decoration:none}
+.avatar{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+.avatar.lg{width:72px;height:72px;font-size:24px}
+.avatar.md{width:46px;height:46px;font-size:16px}
+
+/* buttons / forms */
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;background:var(--navy);color:#fff;font-size:14.5px;transition:background .15s}
+.btn:hover{background:var(--navy2);text-decoration:none}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.gold:hover{background:var(--gold-d);color:#fff}
+.btn.blue{background:var(--blue)}
+.btn.ghost{background:#fff;color:var(--navy);border-color:var(--line)}
+.btn.ghost:hover{background:var(--bg)}
+.btn.danger{background:#fff;color:var(--err);border-color:#f3c5bf}
+.btn.danger:hover{background:var(--err-bg)}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:8px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+label.f{display:block;font-weight:600;font-size:13.5px;margin-bottom:5px;color:var(--navy)}
+.in,select.in,textarea.in{width:100%;border:1px solid #cfd8e6;border-radius:10px;padding:10px 12px;background:#fff;font-size:14.5px}
+.in:focus{border-color:var(--blue);outline:3px solid #cfdcfb}
+textarea.in{min-height:110px;resize:vertical}
+.field{margin-bottom:14px}
+.err-t{color:var(--err);font-size:13px;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.hint{font-size:12.5px;color:var(--mut);margin-top:4px}
+
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card.pad0{padding:0;overflow:hidden}
+.card.link{display:block;color:inherit;transition:border-color .15s,box-shadow .15s}
+.card.link:hover{border-color:#b9c7dd;box-shadow:0 6px 20px rgba(10,29,55,.08);text-decoration:none}
+.tag{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:600}
+.tag.gold{background:#fbf0cf;color:#7a5a00}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+.tag.err{background:var(--err-bg);color:var(--err)}
+.tag.gray{background:#eef1f6;color:var(--mut)}
+.price{font-weight:800;color:var(--navy)}
+.sect{padding:54px 0}
+.sect.tight{padding:30px 0}
+.sect-h{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.thumb{height:130px;display:flex;align-items:flex-end;padding:12px;color:#fff;font-weight:700;position:relative}
+.thumb span{background:rgba(10,29,55,.55);padding:3px 9px;border-radius:6px;font-size:12px}
+.stars{color:var(--gold);font-weight:700}
+
+/* hero */
+.hero{background:linear-gradient(180deg,#fff 0%,#eef3fb 100%);border-bottom:1px solid var(--line);overflow:hidden}
+.hero-in{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-top:44px;padding-bottom:40px}
+.hero p.lead{font-size:18px;color:var(--mut);margin:16px 0 22px;max-width:520px}
+.search{display:flex;background:#fff;border:1px solid #cfd8e6;border-radius:14px;padding:6px;gap:6px;box-shadow:0 10px 30px rgba(10,29,55,.08);max-width:620px}
+.search select{border:0;border-right:1px solid var(--line);border-radius:0;padding:0 10px;background:none;font-weight:600;width:130px;cursor:pointer}
+.search input{border:0;flex:1;padding:10px;min-width:0;outline:none;background:none}
+.hero-img{position:relative}
+.hero-img img{width:100%;height:auto;max-height:430px;object-fit:cover;object-position:60% 20%;border-radius:20px;display:block;background:var(--navy)}
+.hero-img .float{max-width:calc(100% - 24px);position:absolute;left:-18px;bottom:22px;background:#fff;border-radius:12px;padding:12px 16px;box-shadow:0 12px 30px rgba(10,29,55,.2);font-size:13px}
+.actions4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-26px;position:relative;z-index:2}
+.act{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:flex-start;color:inherit;box-shadow:0 8px 22px rgba(10,29,55,.06)}
+.act:hover{text-decoration:none;border-color:var(--gold)}
+.act .ic{width:42px;height:42px;border-radius:10px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.act b{display:block;color:var(--navy)}
+.disc{display:flex;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);background:#fff;border-radius:12px;color:inherit;cursor:pointer;width:100%;text-align:left}
+.disc:hover{border-color:var(--gold);text-decoration:none}
+.disc .ic{font-size:22px}
+.stats{background:var(--navy);color:#fff;border-radius:18px;padding:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.stats b{display:block;font-size:32px;color:var(--gold);font-weight:800}
+.stats span{color:#c9d5e8;font-size:14px}
+
+/* lists */
+.jobrow{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);color:inherit;background:#fff}
+.jobrow:last-child{border-bottom:0}
+.jobrow:hover{background:#fafcff;text-decoration:none}
+.filters{display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:10px;margin-bottom:18px}
+.page-h{padding:30px 0 18px}
+.crumb{font-size:13px;color:var(--mut);margin-bottom:10px}
+.empty{text-align:center;padding:46px 20px;color:var(--mut);background:#fff;border:1px dashed #c8d3e3;border-radius:14px}
+.empty b{display:block;color:var(--navy);font-size:17px;margin-bottom:6px}
+.split{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;font-size:14px}
+.kv dt{color:var(--mut)}
+.kv dd{margin:0;font-weight:600}
+.desc{white-space:pre-wrap;word-wrap:break-word}
+
+/* tabs / tables */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;overflow-x:auto}
+.tabs button{background:none;border:0;padding:10px 14px;border-bottom:3px solid transparent;cursor:pointer;font-weight:600;color:var(--mut);white-space:nowrap}
+.tabs button.on{color:var(--navy);border-color:var(--gold)}
+table.t{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+table.t th{text-align:left;padding:10px 12px;background:#f1f4f9;color:var(--mut);font-weight:600;font-size:12.5px}
+table.t td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:middle}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kpi b{display:block;font-size:28px;color:var(--navy);font-weight:800}
+
+/* auth */
+.auth{max-width:460px;margin:40px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 12px 34px rgba(10,29,55,.08)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{border:1px solid #cfd8e6;border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;gap:8px;align-items:flex-start;background:#fff}
+.seg input{margin-top:4px}
+.seg label:has(input:checked){border-color:var(--blue);background:var(--blue-l)}
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg3 label{border:1px solid #cfd8e6;border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-weight:600;background:#fff}
+.seg3 label:has(input:checked){border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.seg3 input{display:none}
+
+/* modal / toast */
+.ov{position:fixed;inset:0;background:rgba(10,29,55,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:92vh;overflow:auto;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.modal h3{font-size:20px;margin-bottom:14px}
+#toasts{position:fixed;right:16px;top:78px;z-index:120;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.toast{background:var(--navy);color:#fff;padding:11px 16px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:14px;border-left:4px solid var(--gold)}
+.toast.err{border-color:#ef4444;background:#7f1d1d}
+.toast.ok{border-color:#22c55e}
+
+/* messages */
+.msgs{display:grid;grid-template-columns:300px 1fr;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:540px}
+.convs{border-right:1px solid var(--line);overflow:auto;max-height:640px}
+.conv{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;color:inherit;align-items:center}
+.conv:hover,.conv.on{background:#f3f7ff;text-decoration:none}
+.thread{display:flex;flex-direction:column;max-height:640px}
+.thread-b{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:8px;background:#f8fafd}
+.bub{max-width:76%;padding:9px 13px;border-radius:14px;font-size:14.5px;white-space:pre-wrap;word-wrap:break-word}
+.bub.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.bub.them{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.bub small{display:block;opacity:.65;font-size:11px;margin-top:3px}
+.thread-f{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+
+/* faq */
+details.faq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0}
+details.faq+details.faq{margin-top:10px}
+details.faq summary{padding:14px 18px;cursor:pointer;font-weight:600;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq summary::after{content:"+";font-size:20px;color:var(--gold-d);line-height:1}
+details.faq[open] summary::after{content:"–"}
+details.faq div{padding:0 18px 16px;color:var(--mut)}
+
+/* chat widget */
+#chatFab{position:fixed;right:20px;bottom:20px;z-index:60;background:var(--gold);color:var(--navy);border:0;border-radius:99px;padding:13px 20px;font-weight:700;cursor:pointer;box-shadow:0 10px 28px rgba(10,29,55,.35);display:flex;gap:8px;align-items:center}
+#chatBox{position:fixed;right:20px;bottom:20px;z-index:70;width:360px;max-width:calc(100vw - 24px);height:520px;max-height:calc(100vh - 40px);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(10,29,55,.4);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+#chatBox.open{display:flex}
+.chat-h{background:var(--navy);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.chat-h b{color:#fff}
+.chat-b{flex:1;overflow:auto;padding:14px;background:#f8fafd;display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{border:1px solid #c5d3ea;background:#fff;border-radius:99px;padding:5px 11px;font-size:12.5px;cursor:pointer;color:var(--blue);font-weight:600}
+.chip:hover{background:var(--blue-l)}
+.chat-f{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+
+/* footer */
+footer{background:var(--navy);color:#c9d5e8;margin-top:40px;padding:44px 0 26px}
+footer h4{color:#fff;margin-bottom:12px;font-size:15px}
+footer a{color:#c9d5e8;display:block;padding:3px 0;font-size:14px}
+footer a:hover{color:var(--gold);text-decoration:none}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:28px}
+.price-card{display:flex;flex-direction:column;gap:12px}
+.price-card.best{border:2px solid var(--gold);position:relative}
+.price-card ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:14px}
+.price-card li::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
+.price-big{font-size:34px;font-weight:800;color:var(--navy)}
+
+@media (max-width:980px){
+  .hero-in,.split{grid-template-columns:1fr}
+  .hero-img .float{left:12px}
+  .actions4,.grid4,.kpis{grid-template-columns:repeat(2,1fr)}
+  .grid3{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:820px){
+  .burger{display:block}
+  .links{display:none;position:absolute;left:0;right:0;top:66px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;padding:10px 16px;margin:0}
+  .links.open{display:flex}
+  .nav .right .hide-m{display:none}
+  .msgs{grid-template-columns:1fr}
+  .convs{max-height:220px;border-right:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:560px){
+  .jobrow{flex-wrap:wrap}.jobrow>div:last-child{text-align:left!important;white-space:normal!important}
+  .only-s{display:block}.nav .right .hide-s{display:none}
+  .brand{font-size:17px}.nav{gap:8px}.nav .right{gap:6px}.brand svg{width:30px;height:30px}
+  .grid2,.grid3,.grid4,.actions4,.kpis,.filters,.stats{grid-template-columns:1fr}
+  .search{flex-wrap:wrap}.search select{width:100%;border-right:0;padding:10px}
+  .fgrid{grid-template-columns:1fr}
+  .kv{grid-template-columns:100px 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="toasts" aria-live="polite"></div>
+<header class="top"><div class="wrap nav" id="nav"></div></header>
+<main id="app"></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<div id="modalRoot"></div>
+<button id="chatFab" data-act="chat-open" aria-label="Open support chat">💬 Help</button>
+<section id="chatBox" aria-label="Support chat"></section>
+<script>
+/* ============ ENGINEX — Engineering Marketplace & Jobs ============ */
+/* Edit CONFIG to put YOUR real support contact details on the Support page. */
+const CONFIG = {
+  currency: 'SAR',
+  support: {
+    phone: '',        // e.g. '+966 5X XXX XXXX'  (leave '' to hide)
+    whatsapp: '',     // e.g. '966500000000' (digits only, no +)
+    email: '',        // e.g. 'support@yourdomain.com'
+    hours: 'Sun–Thu, 9:00–18:00 (KSA)'
+  },
+  admin: { name: 'ENGINEX Admin', email: 'admin@enginex.com', password: 'Admin@123' } // OFFLINE PREVIEW ONLY (file:// or no server). Online, the admin is set with ADMIN_EMAIL / ADMIN_PASSWORD on the server.
+};
+
+/* ---------- storage (localStorage with in-memory fallback) ---------- */
+const mem = {};
+let lsOK = true;
+try { localStorage.setItem('ex:t', '1'); localStorage.removeItem('ex:t'); } catch (e) { lsOK = false; }
+let SERVER = false, TOKEN = (()=>{try{return localStorage.getItem('ex:token')}catch(e){return null}})(), SRV = { bank:{}, gateway:false, prices:{}, feature:{} };
+const LOCALK = new Set(['session','guesttix']), cache = {}; let pend = {}, timer = null;
+const api = (p, o = {}) => fetch(p, { ...o, headers: { 'Content-Type': 'application/json', ...(TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {}) }, body: o.body ? JSON.stringify(o.body) : undefined }).then(r => r.json().then(j => (r.ok ? j : Promise.reject(j))));
+let SERVER_CHECKED = false;
+async function loadServer() {
+  try {
+    const r = await fetch('/api/state', { headers: TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {} });
+    if (!r.ok) throw 0;
+    const j = await r.json(); if (!j || !j.state) throw 0;
+    for (const k in cache) if (!LOCALK.has(k) && !pend[k]) delete cache[k];
+    Object.assign(cache, ...Object.entries(j.state).map(([k, v]) => pend[k] ? {} : { [k]: JSON.stringify(v) }));
+    SRV = j; SERVER = true; SERVER_CHECKED = true;
+    if (TOKEN && !j.me) { TOKEN = null; try { localStorage.removeItem('ex:token'); } catch (e) {} DB.set('session', null); } // expired login
+  } catch (e) {
+    if (!SERVER_CHECKED) { SERVER_CHECKED = true; try { const h = await fetch('/api/health'); SERVER = h.ok && (await h.json()).ok === true; } catch (_) { SERVER = false; } }
+  }
+}
+const ANON_KEYS = new Set(['listings', 'tickets', 'news', 'tcount']);
+function flush() { const p = pend; pend = {}; timer = null; for (const k in p) { if (!TOKEN && !ANON_KEYS.has(k)) continue; api('/api/kv/' + encodeURIComponent(k), { method: 'PUT', body: { v: JSON.parse(p[k]) } }).catch(() => toast('Could not save to the server.', 'err')); } }
+const DB = {
+  get(k, d) { if (SERVER || cache[k] !== undefined) { try { const v = LOCALK.has(k) ? localStorage.getItem('ex:' + k) : cache[k]; return v ? JSON.parse(v) : d; } catch (e) { return d; } } return DB._get(k, d); },
+  set(k, v) { if (!SERVER) return DB._set(k, v); const s = JSON.stringify(v); if (LOCALK.has(k)) { try { localStorage.setItem('ex:' + k, s); } catch (e) {} return; } cache[k] = s; pend[k] = s; clearTimeout(timer); timer = setTimeout(flush, 250); },
+  _get(k, d) { try { const v = lsOK ? localStorage.getItem('ex:' + k) : mem[k]; return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  _set(k, v) { const s = JSON.stringify(v); try { if (lsOK) localStorage.setItem('ex:' + k, s); else mem[k] = s; } catch (e) { mem[k] = s; toast('Browser storage is full or blocked — changes may not be kept.', 'err'); } }
+};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const now = () => Date.now();
+const money = n => (n === '' || n == null || isNaN(n)) ? '—' : CONFIG.currency + ' ' + Number(n).toLocaleString('en-US');
+function ago(t) {
+  const s = Math.max(1, Math.floor((now() - t) / 1000));
+  if (s < 60) return 'just now';
+  const m = Math.floor(s / 60); if (m < 60) return m + ' min ago';
+  const h = Math.floor(m / 60); if (h < 24) return h + ' h ago';
+  const d = Math.floor(h / 24); if (d < 30) return d + ' day' + (d > 1 ? 's' : '') + ' ago';
+  return new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+const fdate = t => new Date(t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const initials = n => String(n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const COLORS = ['#1D4ED8', '#0f766e', '#9333ea', '#c2410c', '#0369a1', '#be123c', '#4d7c0f', '#7c3aed'];
+const colorOf = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length]; };
+const avatar = (u, cls = '') => `<span class="avatar ${cls}" style="background:${colorOf(u?.id || u?.name)}">${esc(initials(u?.name))}</span>`;
+const validEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+async function hash(p) {
+  try {
+    if (window.crypto && crypto.subtle) {
+      const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('enginex|' + p));
+      return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+  } catch (e) {}
+  let h = 5381; const s = 'enginex|' + p; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return 'x' + h.toString(16);
+}
+function toast(msg, kind = '') {
+  const el = document.createElement('div'); el.className = 'toast ' + kind; el.textContent = msg;
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 4200);
+}
+
+/* ---------- reference data ---------- */
+const DISC = [
+  ['Electrical Engineering', '⚡'], ['Civil & Structural', '🏗️'], ['Mechanical & HVAC', '⚙️'], ['Architecture', '📐'],
+  ['ELV & Low Current', '📡'], ['BMS & Automation', '🤖'], ['Renewable Energy', '☀️'], ['Fire & Life Safety', '🔥'],
+  ['Plumbing & Drainage', '🚰'], ['Project Management', '📋'], ['QA/QC & Inspection', '✅'], ['Surveying & GIS', '🧭']
+];
+const DISC_N = DISC.map(d => d[0]);
+const DICON = Object.fromEntries(DISC);
+const CITIES = ['Riyadh', 'Jeddah', 'Dammam', 'Al Khobar', 'Dhahran', 'Makkah', 'Madinah', 'NEOM', 'Abu Dhabi', 'Dubai', 'Doha', 'Cairo', 'Remote'];
+const JOBTYPES = ['Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship'];
+const LEVELS = ['Entry (0–2 yrs)', 'Mid (3–6 yrs)', 'Senior (7+ yrs)', 'Lead / Manager'];
+const TCATS = ['Account & login', 'Posting an ad', 'Jobs & applications', 'Payments & billing', 'Report a listing or user', 'Other'];
+const PLANS = {
+  basic: { name: 'Basic', price: 0, ads: 3, feats: ['Basic profile', 'Up to 3 active ads', 'Apply to jobs & projects', 'Messaging', 'Community access'] },
+  pro: { name: 'Professional', price: 99, ads: 25, feats: ['Everything in Basic', 'Up to 25 active ads', 'Advanced analytics (views & applicants)', 'Featured badge on your ads', 'Priority support queue'] },
+  ent: { name: 'Enterprise', price: null, ads: 9999, feats: ['Everything in Professional', 'Unlimited active ads', 'Custom branding', 'Dedicated account manager', 'Team seats'] }
+};
+const FAQ = [
+  ['How do I create an account?', 'Click “Create account”, pick Engineer (to offer services and apply) or Employer (to hire), fill in your details and submit. You are signed in immediately.', ['account', 'register', 'sign up', 'signup', 'create']],
+  ['How do I post an ad?', 'Sign in, then click “Post an ad”. Choose Service, Job or Project, fill in the details and publish. Your ad appears in the matching section straight away. Manage it later from Dashboard → My ads (edit, close, reopen or delete). The Basic plan allows 3 active ads.', ['post', 'ad', 'advert', 'listing', 'publish', 'sell']],
+  ['How do I apply for a job or send a proposal?', 'Open any job or project, click Apply / Submit proposal, write your note and send. You can track the status under Dashboard → Applications and the poster will be notified by message when they respond.', ['apply', 'job', 'proposal', 'bid', 'application']],
+  ['How do I contact an engineer or employer?', 'Use the Message button on any profile or ad. Conversations live under Messages, with unread counts in the menu.', ['contact', 'message', 'chat', 'talk', 'engineer']],
+  ['How do payments work?', 'In this version ENGINEX does not hold or move money. Agree scope and payment terms directly with the other party in Messages.', ['pay', 'payment', 'invoice', 'price', 'money', 'billing', 'refund']],
+  ['I forgot my password.', 'There is no automatic email reset. Send a support request from this page using your registered email and the support team will issue you a temporary password.', ['password', 'forgot', 'reset', 'login', 'sign in', 'locked']],
+  ['How do I edit or delete my ad?', 'Go to Dashboard → My ads. Use Edit to change details, Close to hide it from listings without deleting, or Delete to remove it permanently.', ['edit', 'delete', 'remove', 'close', 'change']],
+  ['How do I report a problem with an ad or user?', 'Create a support ticket and choose “Report a listing or user”. Include the ad title or user name so the team can review it.', ['report', 'scam', 'fake', 'abuse', 'spam', 'problem']],
+  ['Which plan do I need?', 'Basic is free and includes 3 active ads. Professional raises the limit to 25 and adds analytics. Enterprise is for teams — choose Contact Sales on the Pricing page.', ['plan', 'pricing', 'upgrade', 'enterprise', 'limit']]
+];
+
+/* ---------- seed data ---------- */
+const DAY = 86400000;
+function seedUsers() {
+  const E = (id, name, disc, city, head, exp, rate, rating, done, skills, bio) => ({ id, name, email: id + '@demo.enginex', pass: 'demo-locked', role: 'engineer', discipline: disc, city, headline: head, exp, rate, rating, done, skills, bio, plan: 'basic', demo: true, created: now() - (exp * 30 + 20) * DAY });
+  const C = (id, name, company, city, bio) => ({ id, name, email: id + '@demo.enginex', pass: 'demo-locked', role: 'employer', company, city, headline: company, bio, plan: 'pro', demo: true, created: now() - 200 * DAY });
+  return [
+    E('u_ahmed', 'Ahmed Al-Rashid', 'Electrical Engineering', 'Riyadh', 'Power distribution & substation designer', 11, 180, 4.9, 64, ['MV/LV design', 'ETAP', 'AutoCAD', 'SBC 401', 'Short-circuit studies'], 'Chartered electrical engineer designing power systems for commercial towers and utility substations across KSA.'),
+    E('u_sara', 'Sara Al-Qahtani', 'Architecture', 'Jeddah', 'BIM architect — Revit & coordination', 7, 150, 4.8, 41, ['Revit', 'BIM coordination', 'Concept design', 'Authority drawings'], 'Architect focused on BIM-led delivery and fast authority approvals for residential and mixed-use projects.'),
+    E('u_omar', 'Omar Haddad', 'Mechanical & HVAC', 'Dammam', 'HVAC design & load calculations', 9, 160, 4.7, 52, ['HAP', 'Chilled water', 'VRF', 'Ductwork design', 'ASHRAE'], 'HVAC designer producing load calculations, equipment selection and shop-ready drawings.'),
+    E('u_khalid', 'Khalid Al-Otaibi', 'Civil & Structural', 'Riyadh', 'Structural engineer — concrete & steel', 13, 200, 4.9, 78, ['ETABS', 'SAFE', 'Concrete design', 'Steel connections', 'SBC 301'], 'Structural design for towers, warehouses and infrastructure, including peer review and value engineering.'),
+    E('u_layla', 'Layla Nasser', 'ELV & Low Current', 'Dubai', 'ELV & BMS systems engineer', 8, 140, 4.8, 37, ['CCTV', 'Access control', 'Fire alarm', 'BMS integration', 'Structured cabling'], 'Designs and commissions ELV systems with a focus on clean integration to BMS.'),
+    E('u_yousef', 'Yousef Mansour', 'Renewable Energy', 'NEOM', 'Solar PV & energy storage designer', 6, 170, 4.6, 29, ['PVsyst', 'BESS sizing', 'Grid code compliance', 'Yield studies'], 'Solar PV and battery storage designer, from feasibility to IFC drawings.'),
+    E('u_nora', 'Nora Al-Harbi', 'Fire & Life Safety', 'Al Khobar', 'Fire protection & life safety consultant', 10, 155, 4.8, 46, ['NFPA 13/72', 'Civil Defense approvals', 'Sprinkler design', 'Fire alarm'], 'Fire protection design and Civil Defense submission specialist.'),
+    E('u_tariq', 'Tariq Younis', 'Project Management', 'Jeddah', 'Project controls & planning (Primavera P6)', 12, 190, 4.7, 58, ['Primavera P6', 'EVM', 'Claims', 'Risk registers'], 'Planning and project controls lead for EPC projects. Earned value, schedules and delay analysis.'),
+    E('u_hana', 'Hana Mostafa', 'QA/QC & Inspection', 'Cairo', 'QA/QC engineer — electrical & MEP', 5, 95, 4.5, 22, ['ITP', 'NCR management', 'Site inspection', 'Testing & commissioning'], 'QA/QC engineer producing inspection plans and test reports for MEP packages.'),
+    E('u_faisal', 'Faisal Al-Dosari', 'BMS & Automation', 'Riyadh', 'BMS & PLC automation specialist', 9, 165, 4.8, 33, ['Niagara', 'BACnet', 'Siemens PLC', 'SCADA'], 'Automation engineer delivering BMS and PLC systems for hospitals and data centres.'),
+    C('c_falak', 'Mohammed Al-Falak', 'Al-Falak Development', 'Riyadh', 'Mid-size developer of residential and commercial towers.'),
+    C('c_gulf', 'Rami Haddad', 'Gulf MEP Contracting', 'Dammam', 'MEP contractor delivering industrial and commercial projects across the Eastern Province.'),
+    C('c_urban', 'Dalia Saeed', 'Urban Grid Consultants', 'Jeddah', 'Engineering consultancy for infrastructure and smart-city projects.')
+  ];
+}
+function seedListings() {
+  const L = (type, owner, title, discipline, location, price, extra, desc, days) => ({ id: 'l_' + uid(), type, owner, title, discipline, location, price, extra: extra || {}, desc, status: 'open', created: now() - days * DAY, views: Math.floor(Math.random() * 180) + 10 });
+  return [
+    L('service', 'u_ahmed', 'Complete electrical building services design', 'Electrical Engineering', 'Riyadh', 3500, { delivery: 7, pricing: 'Starting at' }, 'Full electrical package for commercial and residential buildings:\n• Single line diagrams and panel schedules\n• Load calculations and breaker sizing\n• Lighting and small power layouts\n• Compliance with SBC and IEC standards\nIncludes two revision rounds.', 2),
+    L('service', 'u_layla', 'ELV systems design package (CCTV, access, fire alarm)', 'ELV & Low Current', 'Dubai', 2800, { delivery: 10, pricing: 'Starting at' }, 'ELV layouts, riser diagrams, bills of quantities and device schedules for commercial buildings. Delivered as AutoCAD drawings and PDF.', 4),
+    L('service', 'u_omar', 'HVAC load calculation & equipment selection', 'Mechanical & HVAC', 'Dammam', 1800, { delivery: 5, pricing: 'Starting at' }, 'Cooling and heating load calculations (HAP), equipment schedule and a short design basis report.', 5),
+    L('service', 'u_khalid', 'Structural design review & value engineering', 'Civil & Structural', 'Riyadh', 4200, { delivery: 12, pricing: 'Starting at' }, 'Independent review of concrete and steel structural designs with cost-saving recommendations and marked-up drawings.', 6),
+    L('service', 'u_sara', 'Revit MEP-coordinated BIM model (LOD 300)', 'Architecture', 'Jeddah', 5200, { delivery: 15, pricing: 'Starting at' }, 'Architectural BIM model with clash detection against structure and MEP, ready for authority submission.', 7),
+    L('service', 'u_yousef', 'Rooftop solar PV design & yield study', 'Renewable Energy', 'NEOM', 2400, { delivery: 6, pricing: 'Starting at' }, 'PV layout, string sizing, single line diagram and PVsyst energy yield report.', 9),
+    L('service', 'u_nora', 'Fire protection design & Civil Defense submission', 'Fire & Life Safety', 'Al Khobar', 3100, { delivery: 9, pricing: 'Starting at' }, 'Sprinkler and fire alarm design with the full drawing set for Civil Defense approval.', 11),
+    L('service', 'u_tariq', 'Primavera P6 baseline schedule & S-curve', 'Project Management', 'Remote', 2000, { delivery: 5, pricing: 'Starting at' }, 'Resource-loaded baseline programme, S-curve and monthly progress reporting template.', 12),
+    L('job', 'c_falak', 'Senior Electrical Engineer — High-Rise Towers', 'Electrical Engineering', 'Riyadh', 18000, { jobType: 'Full-time', level: LEVELS[2], deadline: '' }, 'We are hiring a senior electrical engineer to lead the MEP electrical package on two high-rise towers.\n\nResponsibilities:\n• Review and approve design submittals\n• Coordinate with the consultant and authorities\n• Supervise site inspections and testing\n\nRequirements: 8+ years, SBC 401 knowledge, strong coordination skills. Monthly salary shown.', 1),
+    L('job', 'c_gulf', 'BMS Commissioning Engineer', 'BMS & Automation', 'Dammam', 14000, { jobType: 'Contract', level: LEVELS[1], deadline: '' }, '12-month contract commissioning BMS on an industrial campus. Experience with BACnet and Niagara required.', 2),
+    L('job', 'c_urban', 'Project Planner (Primavera P6)', 'Project Management', 'Jeddah', 15000, { jobType: 'Full-time', level: LEVELS[1], deadline: '' }, 'Maintain baselines and updates for a smart-city infrastructure programme and report SPI/CPI to the PMO.', 3),
+    L('job', 'c_falak', 'Civil & Structural Engineer', 'Civil & Structural', 'Riyadh', 13000, { jobType: 'Full-time', level: LEVELS[1], deadline: '' }, 'Design and review structural packages for residential developments. ETABS and SAFE experience needed.', 4),
+    L('job', 'c_gulf', 'ELV & Low Current Site Engineer', 'ELV & Low Current', 'Al Khobar', 11000, { jobType: 'Full-time', level: LEVELS[0], deadline: '' }, 'Supervise installation of CCTV, access control and fire alarm systems on commercial projects.', 6),
+    L('job', 'c_urban', 'QA/QC Engineer — MEP', 'QA/QC & Inspection', 'Remote', 9000, { jobType: 'Freelance', level: LEVELS[1], deadline: '' }, 'Prepare ITPs, review inspection requests and keep NCR logs for MEP packages. Part-time, remote.', 8),
+    L('job', 'c_falak', 'HVAC Design Engineer', 'Mechanical & HVAC', 'Riyadh', 12500, { jobType: 'Full-time', level: LEVELS[1], deadline: '' }, 'Design HVAC systems for commercial buildings and review contractor shop drawings.', 10),
+    L('job', 'c_gulf', 'Solar PV Site Engineer', 'Renewable Energy', 'NEOM', 13500, { jobType: 'Contract', level: LEVELS[1], deadline: '' }, 'Site supervision for a utility-scale solar installation. Accommodation provided.', 12),
+    L('project', 'c_falak', 'Electrical design for 24-storey commercial tower', 'Electrical Engineering', 'Riyadh', 45000, { duration: '3 months', deadline: '', bids: 'Fixed price' }, 'We need a complete electrical design package: MV/LV distribution, lighting, small power, and emergency systems. Deliverables include drawings, calculations, BOQ and specifications. Must comply with SBC and IEC.', 2),
+    L('project', 'c_urban', 'Smart-city street lighting control system', 'BMS & Automation', 'Jeddah', 60000, { duration: '4 months', deadline: '', bids: 'Fixed price' }, 'Design a centralised control system for street lighting with energy reporting. Provide architecture, specifications and BOQ.', 3),
+    L('project', 'c_gulf', 'Fire alarm redesign for industrial warehouse', 'Fire & Life Safety', 'Dammam', 18000, { duration: '6 weeks', deadline: '', bids: 'Fixed price' }, 'Existing system does not meet current code. Provide a gap analysis, a new design and Civil Defense submission.', 5),
+    L('project', 'c_falak', 'Revit model for residential compound (80 villas)', 'Architecture', 'Riyadh', 38000, { duration: '2 months', deadline: '', bids: 'Fixed price' }, 'Produce a coordinated Revit model for 80 villas from concept drawings.', 7),
+    L('project', 'c_urban', 'Rooftop solar feasibility for 5 public buildings', 'Renewable Energy', 'Madinah', 22000, { duration: '5 weeks', deadline: '', bids: 'Fixed price' }, 'Feasibility study including yield, cost and payback for five municipal buildings.', 9),
+    L('project', 'c_gulf', 'Project controls setup for EPC package', 'Project Management', 'Remote', 30000, { duration: '3 months', deadline: '', bids: 'Hourly or fixed' }, 'Set up WBS, baseline schedule, S-curve and EVM reporting for an EPC package.', 11)
+  ];
+}
+async function ensureSeed() {
+  if (SERVER) return; // the server owns all data; demo data is only for offline preview
+  if (DB.get('seed', 0) === 2) return;
+  const users = seedUsers();
+  users.push({ id: 'u_admin', name: CONFIG.admin.name, email: CONFIG.admin.email, pass: await hash(CONFIG.admin.password), role: 'admin', headline: 'Platform administrator', city: 'Riyadh', plan: 'ent', created: now() - 300 * DAY });
+  DB.set('users', users); DB.set('listings', seedListings());
+  DB.set('apps', []); DB.set('threads', []); DB.set('tickets', []); DB.set('saves', {}); DB.set('news', []); DB.set('tcount', 1000);
+  DB.set('seed', 2);
+}
+const getUsers = () => DB.get('users', []);
+const userById = id => getUsers().find(u => u.id === id);
+const getListings = () => DB.get('listings', []);
+const listingById = id => getListings().find(l => l.id === id);
+const getApps = () => DB.get('apps', []);
+const getTickets = () => DB.get('tickets', []);
+
+/* ---------- session ---------- */
+const me = () => { const id = DB.get('session', null); return id ? userById(id) : null; };
+function saveUser(u) { const us = getUsers().map(x => x.id === u.id ? u : x); DB.set('users', us); }
+const isAdmin = () => me()?.role === 'admin';
+function activeAds(uid_) { return getListings().filter(l => l.owner === uid_ && l.status === 'open').length; }
+function adLimit(u) { return u.role === 'admin' ? 9999 : (PLANS[u.plan] || PLANS.basic).ads; }
+
+/* ---------- messaging ---------- */
+const tkey = (a, b) => [a, b].sort().join('|');
+function getThreads() { return DB.get('threads', []); }
+function sendMsg(from, to, text, noAuto) {
+  const ts = getThreads(); const k = tkey(from, to);
+  let th = ts.find(t => t.key === k);
+  if (!th) { th = { key: k, users: [from, to], msgs: [], read: {} }; ts.push(th); }
+  th.msgs.push({ from, text, t: now() }); th.read[from] = now();
+  DB.set('threads', ts);
+  const target = userById(to);
+  if (target?.demo && !noAuto) setTimeout(() => {
+    const ts2 = getThreads(); const t2 = ts2.find(t => t.key === k); if (!t2) return;
+    t2.msgs.push({ from: to, text: target.role === 'engineer' ? `Hi ${userById(from)?.name?.split(' ')[0] || ''}, thanks for reaching out. I'm available — send the scope and drawings and I'll come back with a quote. (Automatic demo reply)` : `Thank you for your message. Our team will review and get back to you shortly. (Automatic demo reply)`, t: now(), auto: true });
+    DB.set('threads', ts2); refreshMsgUI();
+  }, 1500);
+}
+function unreadCount(uid_) {
+  return getThreads().filter(t => t.users.includes(uid_)).reduce((n, t) => n + t.msgs.filter(m => m.from !== uid_ && m.t > (t.read[uid_] || 0)).length, 0);
+}
+function markRead(key, uid_) { const ts = getThreads(); const t = ts.find(x => x.key === key); if (t) { t.read[uid_] = now(); DB.set('threads', ts); } }
+
+/* ---------- tickets ---------- */
+function createTicket({ userId, name, email, category, subject, message }) {
+  const n = DB.get('tcount', 1000) + 1; DB.set('tcount', n);
+  const t = { id: 'EX-' + n, userId: userId || null, name, email: email.toLowerCase(), category, subject, status: 'open', created: now(), updated: now(), replies: [{ by: 'user', name, text: message, t: now() }] };
+  const ts = getTickets(); ts.push(t); DB.set('tickets', ts); return t;
+}
+function saveTicket(t) { DB.set('tickets', getTickets().map(x => x.id === t.id ? t : x)); }
+
+/* ============ UI state & router ============ */
+const S = { next: null, viewed: new Set(), tab: {}, chat: null, chatOpen: false, tracked: null, adminFilter: 'all' };
+const F = {
+  service: { q: '', d: '', loc: '', s: 'new' },
+  job: { q: '', d: '', loc: '', s: 'new', jt: '' },
+  project: { q: '', d: '', loc: '', s: 'new' },
+  engineer: { q: '', d: '', loc: '', s: 'rating' }
+};
+function parse() {
+  const h = (location.hash.slice(1) || '/').split('#')[0]; const [p, q] = h.split('?');
+  return { parts: p.split('/').filter(Boolean), q: Object.fromEntries(new URLSearchParams(q || '')), path: p };
+}
+const go = h => { if (location.hash === h) render(); else location.hash = h; };
+const opt = (arr, sel, ph) => (ph ? `<option value="">${esc(ph)}</option>` : '') + arr.map(a => `<option ${a === sel ? 'selected' : ''}>${esc(a)}</option>`).join('');
+
+/* ---------- chrome ---------- */
+const LOGO = `<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#0A1D37"/><path d="M24 8l5 3-5 3-5-3z" fill="#D4A017"/><path d="M24 14l6 4-6 4-6-4z" fill="#D4A017"/><path d="M18 18l-5 4 5 4 6-4zM30 18l5 4-5 4-6-4z" fill="#1D4ED8"/><path d="M24 22l6 4-6 4-6-4z" fill="#D4A017"/><path d="M18 26l-5 4 5 4 6-4zM30 26l5 4-5 4-6-4z" fill="#1D4ED8"/><path d="M24 30l6 4-6 4-6-4z" fill="#D4A017"/></svg>`;
+const NAVL = [['', 'Home'], ['marketplace', 'Marketplace'], ['jobs', 'Jobs'], ['projects', 'Projects'], ['engineers', 'Engineers'], ['pricing', 'Pricing'], ['support', 'Support'], ['about', 'About']];
+function renderChrome() {
+  const u = me(); const cur = parse().parts[0] || '';
+  const unread = u ? unreadCount(u.id) : 0;
+  $('#nav').innerHTML = `
+    <a class="brand" href="#/">${LOGO}ENGINEX</a>
+    <nav class="links" id="links" aria-label="Main">${NAVL.map(([p, t]) => `<a href="#/${p}" class="${cur === p ? 'on' : ''}">${t}</a>`).join('')}${u ? '' : '<a class="only-s" href="#/signin">Sign in</a>'}</nav>
+    <div class="right">
+      ${u ? `<a class="btn gold sm hide-m" href="#/post">+ Post an ad</a>
+      <div class="menu" id="umenu"><button class="btn ghost sm" data-act="menu" aria-haspopup="true" style="padding:4px 10px 4px 4px;border-radius:99px">${avatar(u)}<span class="hide-m">${esc(u.name.split(' ')[0])}</span>${unread ? `<span class="badge">${unread}</span>` : ''}</button>
+        <div class="menu-panel"><div style="padding:8px 12px"><b>${esc(u.name)}</b><div class="small muted">${esc(u.email)}</div></div><hr style="border:0;border-top:1px solid var(--line);margin:4px 0">
+          <a href="#/dashboard">Dashboard</a><a href="#/dashboard/ads">My ads</a><a href="#/messages">Messages ${unread ? `<span class="badge">${unread}</span>` : ''}</a><a href="#/dashboard/support">My support tickets</a><a href="#/dashboard/profile">Edit profile</a>
+          ${u.role === 'admin' ? '<a href="#/dashboard/desk">Support desk (admin)</a>' : ''}
+          <hr style="border:0;border-top:1px solid var(--line);margin:4px 0"><button data-act="signout">Sign out</button></div></div>`
+      : `<a class="btn ghost sm hide-s" href="#/signin">Sign in</a><a class="btn gold sm" href="#/register">Create account</a>`}
+      <button class="burger" data-act="burger" aria-label="Menu">☰</button>
+    </div>`;
+  $('#foot').innerHTML = `<div class="fgrid">
+    <div><div class="brand" style="color:#fff">${LOGO}ENGINEX</div><p style="margin-top:12px;max-width:300px">The engineering marketplace and jobs platform for the GCC. Hire engineers, find work, post projects.</p>
+      <form data-form="news" class="row" style="margin-top:14px;flex-wrap:nowrap"><input class="in" name="email" type="email" placeholder="Your email for updates" aria-label="Email" style="max-width:220px"><button class="btn gold sm">Subscribe</button></form></div>
+    <div><h4>Explore</h4><a href="#/marketplace">Marketplace</a><a href="#/jobs">Jobs</a><a href="#/projects">Projects</a><a href="#/engineers">Engineers</a></div>
+    <div><h4>Account</h4><a href="#/register">Create account</a><a href="#/signin">Sign in</a><a href="#/post">Post an ad</a><a href="#/dashboard">Dashboard</a></div>
+    <div><h4>Help</h4><a href="#/support">Support helpline</a><a href="#/support#faq">FAQ</a><a href="#/pricing">Pricing</a><a href="#/about">About ENGINEX</a></div></div>
+    <div class="small" style="margin-top:28px;border-top:1px solid #243f66;padding-top:16px">© ${new Date().getFullYear()} ENGINEX. All rights reserved.</div>`;
+}
+
+function render() {
+  const r = parse(); const p = r.parts; const u = me(); let html = '';
+  const gate = () => { if (!u) { S.next = location.hash; toast('Please sign in to continue.'); setTimeout(() => go('#/signin'), 0); return false; } return true; };
+  try {
+    switch (p[0]) {
+      case undefined: html = vHome(); break;
+      case 'marketplace': html = vBrowse('service', r.q); break;
+      case 'jobs': html = vBrowse('job', r.q); break;
+      case 'projects': html = vBrowse('project', r.q); break;
+      case 'engineers': html = vBrowse('engineer', r.q); break;
+      case 'engineer': html = vProfile(p[1]); break;
+      case 'listing': html = vListing(p[1]); break;
+      case 'signin': html = u ? (setTimeout(() => go('#/dashboard'), 0), '') : vSignin(); break;
+      case 'register': html = u ? (setTimeout(() => go('#/dashboard'), 0), '') : vRegister(r.q); break;
+      case 'post': if (!gate()) return; html = vPost(r.q); break;
+      case 'dashboard': if (!gate()) return; html = vDash(p[1] || 'overview', p[2]); break;
+      case 'messages': if (!gate()) return; html = vMessages(p[1], r.q); break;
+      case 'support': html = vSupport(); break;
+      case 'pricing': html = vPricing(); break;
+      case 'about': html = vAbout(); break;
+      default: html = `<div class="wrap sect"><div class="empty"><b>Page not found</b>Check the address or go back <a href="#/">home</a>.</div></div>`;
+    }
+  } catch (err) { console.error(err); html = `<div class="wrap sect"><div class="empty"><b>Something went wrong</b>${esc(err.message)}. <a href="#/">Go home</a></div></div>`; }
+  $('#app').innerHTML = html;
+  renderChrome();
+  const links = $('#links'); links && links.classList.remove('open');
+  after(p);
+  if (!location.hash.includes('#faq') && !(p[0] === 'messages')) window.scrollTo(0, 0);
+}
+function after(p) {
+  if (p[0] === 'messages') { const b = $('.thread-b'); if (b) b.scrollTop = b.scrollHeight; }
+  if (p[0] === 'support' && location.hash.endsWith('#faq')) $('#faq')?.scrollIntoView();
+  const pf = $('form[data-form="post"]'); if (pf) syncPostType(pf);
+}
+window.addEventListener('hashchange', render);
+
+/* ---------- listing / profile cards ---------- */
+function priceText(l) {
+  if (l.type === 'service') return `<span class="muted small">From</span> <span class="price">${money(l.price)}</span>`;
+  if (l.type === 'job') return `<span class="price">${money(l.price)}</span> <span class="muted small">/ month</span>`;
+  return `<span class="muted small">Budget</span> <span class="price">${money(l.price)}</span>`;
+}
+const GR = [['#0A1D37', '#1D4ED8'], ['#12305a', '#0f766e'], ['#1e3a8a', '#6d28d9'], ['#0f3d3e', '#2563eb'], ['#3a2a10', '#b6870f'], ['#102a43', '#486581']];
+function grad(d) { let h = 0; for (const c of String(d)) h = (h * 31 + c.charCodeAt(0)) >>> 0; const [a, b] = GR[h % GR.length]; return `linear-gradient(135deg,${a},${b})`; }
+function serviceCard(l) {
+  const o = userById(l.owner);
+  return `<a class="card link pad0" href="#/listing/${l.id}"><div class="thumb" style="background:${grad(l.discipline)}"><span style="position:absolute;right:12px;top:12px;font-size:30px;background:none">${DICON[l.discipline] || '🛠️'}</span><span>${esc(l.discipline)}</span></div>
+    <div style="padding:16px"><h3 style="font-size:16px;min-height:42px">${esc(l.title)}</h3>
+    <div class="row" style="margin:10px 0">${avatar(o)}<div class="grow"><div style="font-weight:600;font-size:14px">${esc(o?.name || 'Unknown')}</div><div class="small muted">${esc(l.location)}</div></div>${o?.rating ? `<span class="stars">★ ${o.rating}</span>` : ''}</div>
+    <div class="row between">${priceText(l)}<span class="small muted">${l.extra.delivery ? l.extra.delivery + '-day delivery' : ''}</span></div></div></a>`;
+}
+function jobRow(l) {
+  const o = userById(l.owner);
+  return `<a class="jobrow" href="#/listing/${l.id}"><div class="row" style="flex-wrap:nowrap">${avatar(o, 'md')}<div><div style="font-weight:700;color:var(--navy)">${esc(l.title)}</div>
+    <div class="small muted">${esc(o?.company || o?.name || '')} · ${esc(l.location)} · ${ago(l.created)}</div>
+    <div class="row" style="gap:6px;margin-top:6px"><span class="tag">${esc(l.discipline)}</span><span class="tag gray">${esc(l.extra.jobType || '')}</span>${l.extra.level ? `<span class="tag gray">${esc(l.extra.level)}</span>` : ''}</div></div></div>
+    <div style="text-align:right;white-space:nowrap">${priceText(l)}</div></a>`;
+}
+function projectCard(l) {
+  const o = userById(l.owner); const n = getApps().filter(a => a.listingId === l.id).length;
+  return `<a class="card link" href="#/listing/${l.id}"><div class="row between"><span class="tag">${esc(l.discipline)}</span><span class="small muted">${ago(l.created)}</span></div>
+    <h3 style="margin:10px 0 6px">${esc(l.title)}</h3><p class="muted small" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(l.desc)}</p>
+    <div class="row between" style="margin-top:14px"><div>${priceText(l)}</div><div class="small muted">${esc(l.extra.duration || '')} · ${n} proposal${n === 1 ? '' : 's'}</div></div>
+    <div class="row small muted" style="margin-top:10px">${avatar(o)} ${esc(o?.company || o?.name || '')} · ${esc(l.location)}</div></a>`;
+}
+function engineerCard(u) {
+  return `<a class="card link" href="#/engineer/${u.id}"><div class="row" style="flex-wrap:nowrap">${avatar(u, 'md')}<div class="grow"><div style="font-weight:700;color:var(--navy)">${esc(u.name)}</div><div class="small muted">${esc(u.city || '')}</div></div>${u.rating ? `<span class="stars">★ ${u.rating}</span>` : ''}</div>
+    <p style="margin:12px 0 10px;font-weight:500">${esc(u.headline || u.discipline || '')}</p>
+    <div class="row" style="gap:6px">${(u.skills || []).slice(0, 3).map(s => `<span class="tag gray">${esc(s)}</span>`).join('')}</div>
+    <div class="row between" style="margin-top:14px"><span class="tag">${esc(u.discipline || '')}</span><span class="small"><b>${u.rate ? money(u.rate) + '/hr' : ''}</b>${u.exp ? ' · ' + u.exp + ' yrs' : ''}</span></div></a>`;
+}
+
+/* ---------- home ---------- */
+function vHome() {
+  const L = getListings().filter(l => l.status === 'open'); const users = getUsers();
+  const svc = L.filter(l => l.type === 'service').slice(0, 6), jobs = L.filter(l => l.type === 'job').slice(0, 5);
+  return `<section class="hero"><div class="wrap hero-in"><div>
+      <h1>Hire engineers. Find engineering work. All in one place.</h1>
+      <p class="lead">Post a job, project or service and connect with electrical, civil, mechanical and BIM professionals across the GCC.</p>
+      <form class="search" data-form="home-search" role="search"><select name="t" aria-label="Search in"><option value="marketplace">Services</option><option value="jobs">Jobs</option><option value="projects">Projects</option><option value="engineers">Engineers</option></select>
+        <input name="q" placeholder="Search e.g. HVAC design, Revit, substation…" aria-label="Search keywords"><button class="btn gold">Search</button></form>
+      <div class="row small muted" style="margin-top:14px"><span>Popular:</span>${['Electrical design', 'Revit', 'Primavera', 'Solar'].map(k => `<a class="chip" href="#/marketplace?q=${encodeURIComponent(k)}">${k}</a>`).join('')}</div></div>
+      <div class="hero-img"><img src="./enginex-hero.jpg" alt="ENGINEX engineer on a construction site" onerror="this.style.minHeight='300px'"><div class="float"><b>${users.filter(x => x.role === 'engineer').length} engineers</b><br><span class="muted">ready to start this week</span></div></div></div></section>
+    <div class="wrap"><div class="actions4">
+      <a class="act" href="#/engineers"><span class="ic">👷</span><div><b>Find engineers</b><span class="small muted">Browse engineer profiles</span></div></a>
+      <a class="act" href="#/jobs"><span class="ic">💼</span><div><b>Browse jobs</b><span class="small muted">Full-time & contract roles</span></div></a>
+      <a class="act" href="#/post?type=project"><span class="ic">📣</span><div><b>Post a project</b><span class="small muted">Receive proposals</span></div></a>
+      <a class="act" href="#/post?type=service"><span class="ic">🛠️</span><div><b>Offer a service</b><span class="small muted">Sell your expertise</span></div></a></div></div>
+    <section class="sect"><div class="wrap"><div class="sect-h"><div><h2>Featured services</h2><p class="muted">Fixed-scope engineering packages from independent professionals.</p></div><a class="btn ghost sm" href="#/marketplace">Browse all services</a></div>
+      <div class="grid3">${svc.map(serviceCard).join('')}</div></div></section>
+    <section class="sect tight"><div class="wrap"><div class="sect-h"><div><h2>Latest jobs</h2></div><a class="btn ghost sm" href="#/jobs">See all jobs</a></div>
+      <div class="card pad0">${jobs.map(jobRow).join('')}</div></div></section>
+    <section class="sect"><div class="wrap"><div class="sect-h"><h2>Engineering disciplines</h2></div>
+      <div class="grid4">${DISC.map(([n, i]) => `<a class="disc" href="#/marketplace?d=${encodeURIComponent(n)}"><span class="ic">${i}</span><b>${esc(n)}</b></a>`).join('')}</div></div></section>
+    <section class="wrap"><div class="stats"><div><b>${users.filter(x => x.role === 'engineer').length}</b><span>Engineers</span></div><div><b>${users.filter(x => x.role === 'employer').length}</b><span>Employers</span></div><div><b>${L.length}</b><span>Open listings</span></div><div><b>${getApps().length}</b><span>Applications & orders</span></div></div></section>
+    <section class="sect"><div class="wrap"><div class="card row between" style="padding:26px;background:#fff7e0;border-color:#f1dc9b"><div><h3 style="font-size:20px">Questions? Our support helpline is here.</h3><p class="muted">Open a ticket, chat with the assistant, or browse answers to common questions.</p></div><a class="btn" href="#/support">Contact support</a></div></div></section>`;
+}
+
+/* ---------- browse ---------- */
+const BROWSE = {
+  service: { title: 'Marketplace', sub: 'Ready-to-order engineering services.', cta: 'Post a service', ph: 'Search services…' },
+  job: { title: 'Engineering jobs', sub: 'Roles from employers across the region.', cta: 'Post a job', ph: 'Search jobs…' },
+  project: { title: 'Projects', sub: 'Open projects accepting proposals.', cta: 'Post a project', ph: 'Search projects…' },
+  engineer: { title: 'Engineers', sub: 'Find and contact engineering professionals.', cta: '', ph: 'Search name, skill or title…' }
+};
+function vBrowse(type, q) {
+  const f = F[type];
+  if (q.q != null) f.q = q.q; if (q.d != null) f.d = q.d;
+  const c = BROWSE[type];
+  const cities = type === 'engineer' ? [...new Set(getUsers().filter(u => u.role === 'engineer').map(u => u.city))].sort() : CITIES;
+  const sorts = type === 'engineer' ? [['rating', 'Top rated'], ['exp', 'Most experienced'], ['rate', 'Lowest rate']] : [['new', 'Newest'], ['low', 'Price: low to high'], ['high', 'Price: high to low']];
+  return `<div class="wrap"><div class="page-h row between"><div><h1 style="font-size:32px">${c.title}</h1><p class="muted">${c.sub}</p></div>${c.cta ? `<a class="btn gold" href="#/post?type=${type}">+ ${c.cta}</a>` : ''}</div>
+    <div class="filters"><input class="in" data-f="${type}.q" value="${esc(f.q)}" placeholder="${c.ph}" aria-label="Search">
+      <select class="in" data-f="${type}.d" aria-label="Discipline">${opt(DISC_N, f.d, 'All disciplines')}</select>
+      <select class="in" data-f="${type}.loc" aria-label="Location">${opt(cities, f.loc, 'All locations')}</select>
+      ${type === 'job' ? `<select class="in" data-f="job.jt" aria-label="Job type">${opt(JOBTYPES, f.jt, 'All job types')}</select>` : `<select class="in" data-f="${type}.s" aria-label="Sort">${sorts.map(([v, t]) => `<option value="${v}" ${f.s === v ? 'selected' : ''}>${t}</option>`).join('')}</select>`}</div>
+    <div class="row between small muted" style="margin-bottom:12px"><span id="count"></span><button class="btn ghost sm" data-act="clear" data-type="${type}">Clear filters</button></div>
+    <div id="results">${resultsHTML(type)}</div></div><div style="height:30px"></div>`;
+}
+function resultsHTML(type) {
+  const f = F[type]; const q = (f.q || '').toLowerCase().trim(); let a;
+  if (type === 'engineer') {
+    a = getUsers().filter(u => u.role === 'engineer');
+    if (q) a = a.filter(u => [u.name, u.headline, u.discipline, u.city, (u.skills || []).join(' ')].join(' ').toLowerCase().includes(q));
+    if (f.d) a = a.filter(u => u.discipline === f.d); if (f.loc) a = a.filter(u => u.city === f.loc);
+    a.sort((x, y) => f.s === 'exp' ? (y.exp || 0) - (x.exp || 0) : f.s === 'rate' ? (x.rate || 1e9) - (y.rate || 1e9) : (y.rating || 0) - (x.rating || 0));
+  } else {
+    a = getListings().filter(l => l.type === type && l.status === 'open');
+    if (q) a = a.filter(l => [l.title, l.desc, l.discipline, l.location, userById(l.owner)?.name, userById(l.owner)?.company].join(' ').toLowerCase().includes(q));
+    if (f.d) a = a.filter(l => l.discipline === f.d); if (f.loc) a = a.filter(l => l.location === f.loc);
+    if (f.jt) a = a.filter(l => l.extra.jobType === f.jt);
+    a.sort((x, y) => f.s === 'low' ? x.price - y.price : f.s === 'high' ? y.price - x.price : y.created - x.created);
+  }
+  setTimeout(() => { const c = $('#count'); if (c) c.textContent = a.length + ' result' + (a.length === 1 ? '' : 's'); }, 0);
+  if (!a.length) return `<div class="empty"><b>No results</b>Try different keywords or clear the filters.${type !== 'engineer' ? ` Or <a href="#/post?type=${type}">post one yourself</a>.` : ''}</div>`;
+  if (type === 'job') return `<div class="card pad0">${a.map(jobRow).join('')}</div>`;
+  if (type === 'engineer') return `<div class="grid3">${a.map(engineerCard).join('')}</div>`;
+  return `<div class="grid3">${a.map(type === 'service' ? serviceCard : projectCard).join('')}</div>`;
+}
+
+/* ---------- listing detail ---------- */
+function vListing(id) {
+  const l = listingById(id); if (!l) return `<div class="wrap sect"><div class="empty"><b>Listing not found</b>It may have been deleted. <a href="#/marketplace">Browse listings</a></div></div>`;
+  if (!S.viewed.has(id)) { S.viewed.add(id); const all = getListings(); const x = all.find(i => i.id === id); x.views = (x.views || 0) + 1; DB.set('listings', all); }
+  const u = me(); const o = userById(l.owner); const mine = u && u.id === l.owner;
+  const saved = u && (DB.get('saves', {})[u.id] || []).includes(l.id);
+  const apps = getApps().filter(a => a.listingId === l.id);
+  const myApp = u && apps.find(a => a.userId === u.id && a.status !== 'withdrawn');
+  const back = { service: ['marketplace', 'Marketplace'], job: ['jobs', 'Jobs'], project: ['projects', 'Projects'] }[l.type];
+  const cta = l.type === 'service' ? 'Order this service' : l.type === 'job' ? 'Apply now' : 'Submit proposal';
+  const act = l.type === 'service' ? 'order' : l.type === 'job' ? 'apply' : 'propose';
+  const rows = [['Category', l.discipline], ['Location', l.location]];
+  if (l.type === 'service') rows.push(['Delivery', (l.extra.delivery || '—') + ' days']);
+  if (l.type === 'job') rows.push(['Job type', l.extra.jobType || '—'], ['Level', l.extra.level || '—']);
+  if (l.type === 'project') rows.push(['Duration', l.extra.duration || '—'], ['Pricing', l.extra.bids || '—']);
+  if (l.extra.deadline) rows.push(['Deadline', l.extra.deadline]);
+  rows.push(['Posted', ago(l.created)], ['Views', l.views || 0]);
+  return `<div class="wrap"><div class="page-h"><div class="crumb"><a href="#/${back[0]}">${back[1]}</a> / ${esc(l.discipline)}</div>
+    <div class="row between"><h1 style="font-size:30px;max-width:780px">${esc(l.title)}</h1>${l.status === 'closed' ? '<span class="tag err">Closed</span>' : ''}</div></div>
+    <div class="split"><div class="stack">
+      <div class="card"><h3 style="margin-bottom:10px">Description</h3><div class="desc">${esc(l.desc)}</div></div>
+      <div class="card"><h3 style="margin-bottom:12px">Details</h3><dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+      ${mine || isAdmin() ? ownerPanel(l, apps) : ''}</div>
+    <aside class="stack" style="position:sticky;top:84px">
+      <div class="card"><div style="font-size:22px">${priceText(l)}</div>
+        ${l.status === 'closed' ? '<p class="muted" style="margin-top:12px">This listing is closed.</p>' : mine ? `<p class="muted small" style="margin-top:12px">This is your listing.</p><a class="btn block ghost" style="margin-top:10px" href="#/post?edit=${l.id}">Edit listing</a>` :
+      myApp ? `<div class="tag ok" style="margin:12px 0">You already ${l.type === 'service' ? 'ordered' : 'applied'} · ${esc(myApp.status)}</div><a class="btn ghost block" href="#/dashboard/apps">View my applications</a>` :
+        `<button class="btn gold block" style="margin-top:14px" data-act="${act}" data-id="${l.id}">${cta}</button>`}
+        ${mine ? '' : `<button class="btn ghost block" style="margin-top:10px" data-act="msg-open" data-to="${o?.id}" data-ctx="${esc(l.title)}">Message ${esc(o?.name?.split(' ')[0] || 'poster')}</button>`}
+        <button class="btn ghost block" style="margin-top:10px" data-act="save" data-id="${l.id}">${saved ? '★ Saved' : '☆ Save for later'}</button></div>
+      <a class="card link" href="#/engineer/${o?.id}"><div class="row" style="flex-wrap:nowrap">${avatar(o, 'md')}<div><div style="font-weight:700;color:var(--navy)">${esc(o?.name || 'Unknown')}</div><div class="small muted">${esc(o?.company || o?.headline || '')}</div>${o?.rating ? `<div class="stars small">★ ${o.rating} · ${o.done} jobs</div>` : ''}</div></div></a>
+      <div class="card small muted">Need help with this listing? <a href="#/support">Contact support</a> or report it from there.</div></aside></div></div><div style="height:30px"></div>`;
+}
+function ownerPanel(l, apps) {
+  return `<div class="card"><div class="row between" style="margin-bottom:10px"><h3>${l.type === 'service' ? 'Orders' : l.type === 'job' ? 'Applicants' : 'Proposals'} (${apps.length})</h3>
+    <div class="row"><button class="btn ghost sm" data-act="${l.status === 'open' ? 'ad-close' : 'ad-open'}" data-id="${l.id}">${l.status === 'open' ? 'Close listing' : 'Reopen'}</button><button class="btn danger sm" data-act="ad-del" data-id="${l.id}">Delete</button></div></div>
+    ${apps.length ? apps.map(a => appRow(a, true)).join('') : '<p class="muted">Nobody has responded yet.</p>'}</div>`;
+}
+function appRow(a, owner) {
+  const ap = userById(a.userId); const l = listingById(a.listingId);
+  const st = { pending: 'warn', accepted: 'ok', rejected: 'err', withdrawn: 'gray' }[a.status];
+  return `<div style="border-top:1px solid var(--line);padding:12px 0"><div class="row between"><div class="row">${avatar(ap)}<div><a href="#/engineer/${ap?.id}"><b>${esc(ap?.name || 'Unknown')}</b></a><div class="small muted">${fdate(a.t)}${a.amount ? ' · ' + money(a.amount) : ''}${a.days ? ' · ' + a.days + ' days' : ''}</div></div></div><span class="tag ${st}">${a.status}</span></div>
+    <p class="small desc" style="margin:8px 0">${esc(a.message)}</p>
+    ${owner && a.status === 'pending' ? `<div class="row"><button class="btn sm blue" data-act="app-accept" data-id="${a.id}">Accept</button><button class="btn sm danger" data-act="app-reject" data-id="${a.id}">Decline</button><button class="btn sm ghost" data-act="msg-open" data-to="${a.userId}" data-ctx="${esc(l?.title || '')}">Message</button></div>` : owner ? `<button class="btn sm ghost" data-act="msg-open" data-to="${a.userId}" data-ctx="${esc(l?.title || '')}">Message</button>` : ''}</div>`;
+}
+
+/* ---------- profile ---------- */
+function vProfile(id) {
+  const p = userById(id); if (!p) return `<div class="wrap sect"><div class="empty"><b>Profile not found</b><a href="#/engineers">Back to Engineers</a></div></div>`;
+  const u = me(); const ls = getListings().filter(l => l.owner === p.id && l.status === 'open');
+  return `<div class="wrap"><div class="page-h"><div class="crumb"><a href="#/engineers">Engineers</a> / ${esc(p.name)}</div></div>
+    <div class="split"><div class="stack"><div class="card"><div class="row" style="flex-wrap:nowrap;gap:18px">${avatar(p, 'lg')}<div><h1 style="font-size:28px">${esc(p.name)}</h1><div style="font-weight:500;margin:4px 0">${esc(p.headline || '')}</div>
+      <div class="row small muted"><span>📍 ${esc(p.city || '—')}</span>${p.discipline ? `<span class="tag">${esc(p.discipline)}</span>` : ''}${p.role === 'employer' ? '<span class="tag gold">Employer</span>' : ''}${p.role === 'admin' ? '<span class="tag gold">Admin</span>' : ''}${p.rating ? `<span class="stars">★ ${p.rating} (${p.done} jobs)</span>` : ''}</div></div></div></div>
+      <div class="card"><h3 style="margin-bottom:8px">About</h3><p class="desc">${esc(p.bio || 'No bio added yet.')}</p>${(p.skills || []).length ? `<div class="row" style="gap:6px;margin-top:12px">${p.skills.map(s => `<span class="tag gray">${esc(s)}</span>`).join('')}</div>` : ''}</div>
+      <div class="card"><h3 style="margin-bottom:10px">Open listings (${ls.length})</h3>${ls.length ? ls.map(l => `<a class="jobrow" style="border-radius:8px" href="#/listing/${l.id}"><div><b style="color:var(--navy)">${esc(l.title)}</b><div class="small muted">${l.type} · ${esc(l.location)}</div></div><div>${priceText(l)}</div></a>`).join('') : '<p class="muted">No open listings.</p>'}</div></div>
+      <aside class="stack"><div class="card"><dl class="kv"><dt>Experience</dt><dd>${p.exp ? p.exp + ' years' : '—'}</dd><dt>Rate</dt><dd>${p.rate ? money(p.rate) + ' / hr' : '—'}</dd><dt>Member since</dt><dd>${new Date(p.created).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</dd></dl>
+      ${u && u.id === p.id ? '<a class="btn ghost block" style="margin-top:14px" href="#/dashboard/profile">Edit my profile</a>' : `<button class="btn gold block" style="margin-top:14px" data-act="msg-open" data-to="${p.id}" data-ctx="">${p.role === 'engineer' ? 'Message / request a quote' : 'Send message'}</button>`}</div></aside></div></div><div style="height:30px"></div>`;
+}
+
+/* ---------- auth ---------- */
+function vSignin() {
+  return `<div class="wrap"><div class="auth"><h2>Sign in</h2><p class="muted" style="margin:6px 0 20px">Welcome back to ENGINEX.</p>
+    <form data-form="login" novalidate><div class="field"><label class="f" for="le">Email</label><input class="in" id="le" name="email" type="email" autocomplete="email" required></div>
+    <div class="field"><label class="f" for="lp">Password</label><input class="in" id="lp" name="password" type="password" autocomplete="current-password" required></div>
+    <div class="err-t" data-err></div><button class="btn block" style="margin-top:8px">Sign in</button></form>
+    <p class="small muted" style="margin-top:16px">New here? <a href="#/register">Create an account</a> · <a href="#/support">Forgot password?</a></p></div></div>`;
+}
+function vRegister(q) {
+  const role = q.role === 'employer' ? 'employer' : 'engineer';
+  return `<div class="wrap"><div class="auth" style="max-width:560px"><h2>Create your account</h2><p class="muted" style="margin:6px 0 20px">Free to join. Post ads, apply for work and message other members.</p>
+    <form data-form="register" novalidate>
+      <div class="field"><label class="f">I want to</label><div class="seg"><label><input type="radio" name="role" value="engineer" ${role === 'engineer' ? 'checked' : ''}><span><b>Find work</b><br><span class="small muted">Engineer / freelancer</span></span></label><label><input type="radio" name="role" value="employer" ${role === 'employer' ? 'checked' : ''}><span><b>Hire engineers</b><br><span class="small muted">Employer / company</span></span></label></div></div>
+      <div class="grid2"><div class="field"><label class="f" for="rn">Full name</label><input class="in" id="rn" name="name" autocomplete="name" required></div>
+      <div class="field"><label class="f" for="rc">City</label><select class="in" id="rc" name="city">${opt(CITIES, 'Riyadh')}</select></div></div>
+      <div class="field"><label class="f" for="rm">Email</label><input class="in" id="rm" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label class="f" for="rd">Main discipline</label><select class="in" id="rd" name="discipline">${opt(DISC_N, '')}</select></div>
+      <div class="grid2"><div class="field"><label class="f" for="rp">Password</label><input class="in" id="rp" name="password" type="password" autocomplete="new-password" required><div class="hint">At least 8 characters, with a letter and a number.</div></div>
+      <div class="field"><label class="f" for="rp2">Confirm password</label><input class="in" id="rp2" name="password2" type="password" autocomplete="new-password" required></div></div>
+      <label class="small" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:12px"><input type="checkbox" name="terms"> <span>I agree to the ENGINEX terms of use and privacy policy.</span></label>
+      <div class="err-t" data-err></div><button class="btn gold block" style="margin-top:8px">Create account</button></form>
+    <p class="small muted" style="margin-top:16px">Already registered? <a href="#/signin">Sign in</a></p></div></div>`;
+}
+
+/* ---------- post an ad ---------- */
+function vPost(q) {
+  const u = me(); const edit = q.edit ? listingById(q.edit) : null;
+  if (q.edit && (!edit || (edit.owner !== u.id && !isAdmin()))) return `<div class="wrap sect"><div class="empty"><b>You can't edit this listing</b><a href="#/dashboard/ads">Back to my ads</a></div></div>`;
+  const t = edit ? edit.type : (['service', 'job', 'project'].includes(q.type) ? q.type : (u.role === 'employer' ? 'job' : 'service'));
+  const x = edit?.extra || {}; const left = adLimit(u) - activeAds(u.id);
+  return `<div class="wrap"><div class="page-h"><h1 style="font-size:30px">${edit ? 'Edit your ad' : 'Post an ad'}</h1>
+    <p class="muted">${edit ? 'Update the details below.' : `You can have ${adLimit(u) >= 9999 ? 'unlimited' : adLimit(u)} active ads on your plan${adLimit(u) < 9999 ? ` — ${Math.max(left, 0)} left. <a href="#/pricing">Upgrade</a>` : ''}.`}</p></div>
+    <form class="card" data-form="post" data-edit="${edit?.id || ''}" novalidate style="max-width:820px">
+      <div class="field"><label class="f">Ad type</label><div class="seg3">${[['service', '🛠️ Service'], ['job', '💼 Job'], ['project', '📣 Project']].map(([v, n]) => `<label><input type="radio" name="type" value="${v}" ${t === v ? 'checked' : ''} ${edit ? 'disabled' : ''}>${n}</label>`).join('')}</div>
+        ${edit ? `<input type="hidden" name="type" value="${edit.type}">` : ''}<div class="hint" id="typehint"></div></div>
+      <div class="field"><label class="f" for="pt">Title</label><input class="in" id="pt" name="title" maxlength="120" value="${esc(edit?.title || '')}" placeholder="e.g. Electrical design for a 10-storey building"></div>
+      <div class="grid2"><div class="field"><label class="f" for="pd">Discipline</label><select class="in" id="pd" name="discipline">${opt(DISC_N, edit?.discipline || u.discipline || '', 'Select…')}</select></div>
+      <div class="field"><label class="f" for="pl">Location</label><select class="in" id="pl" name="location">${opt(CITIES, edit?.location || u.city || '', 'Select…')}</select></div></div>
+      <div class="field"><label class="f" for="pp"><span id="pricelabel">Price</span> (${CONFIG.currency})</label><input class="in" id="pp" name="price" type="number" min="1" step="1" value="${esc(edit?.price ?? '')}"></div>
+      <div class="x x-service grid2"><div class="field"><label class="f" for="pdl">Delivery time (days)</label><input class="in" id="pdl" name="delivery" type="number" min="1" value="${esc(x.delivery || '')}"></div></div>
+      <div class="x x-job grid2"><div class="field"><label class="f">Job type</label><select class="in" name="jobType">${opt(JOBTYPES, x.jobType || 'Full-time')}</select></div><div class="field"><label class="f">Experience level</label><select class="in" name="level">${opt(LEVELS, x.level || LEVELS[1])}</select></div></div>
+      <div class="x x-project grid2"><div class="field"><label class="f">Expected duration</label><input class="in" name="duration" value="${esc(x.duration || '')}" placeholder="e.g. 6 weeks"></div><div class="field"><label class="f">Pricing model</label><select class="in" name="bids">${opt(['Fixed price', 'Hourly or fixed'], x.bids || 'Fixed price')}</select></div></div>
+      <div class="x x-job x-project field"><label class="f">Application deadline (optional)</label><input class="in" name="deadline" type="date" value="${esc(x.deadline || '')}"></div>
+      <div class="field"><label class="f" for="pdesc">Description</label><textarea class="in" id="pdesc" name="desc" rows="8" placeholder="Scope, deliverables, requirements, standards…">${esc(edit?.desc || '')}</textarea><div class="hint">Minimum 40 characters. Do not include phone numbers or passwords.</div></div>
+      <div class="err-t" data-err></div><div class="row" style="margin-top:8px"><button class="btn gold">${edit ? 'Save changes' : 'Publish ad'}</button><a class="btn ghost" href="${edit ? '#/dashboard/ads' : '#/dashboard'}">Cancel</a></div></form></div><div style="height:30px"></div>`;
+}
+function syncPostType(form) {
+  const t = (form.querySelector('[name=type]:checked') || form.querySelector('[name=type]')).value;
+  $$('.x', form).forEach(e => e.classList.toggle('hide', !e.classList.contains('x-' + t)));
+  const lab = { service: 'Starting price', job: 'Monthly salary', project: 'Budget' }[t];
+  $('#pricelabel', form).textContent = lab;
+  $('#typehint').textContent = { service: 'Sell a fixed-scope service buyers can order.', job: 'Hire an employee, contractor or freelancer.', project: 'Describe a project and receive proposals.' }[t];
+}
+
+/* ---------- dashboard ---------- */
+function vDash(tab, sub) {
+  const u = me();
+  const tabs = [['overview', 'Overview'], ['ads', 'My ads'], ['apps', 'My applications'], ['received', 'Received'], ['saved', 'Saved'], ['support', 'Support tickets'], ['profile', 'Profile']];
+  tabs.splice(6, 0, ['billing', 'Billing']); if (u.role === 'admin') tabs.push(['payments', 'Payments'], ['desk', 'Support desk'], ['users', 'Users'], ['allads', 'All ads']);
+  if (!tabs.some(t => t[0] === tab)) tab = 'overview';
+  let body = '';
+  if (tab === 'overview') body = dOverview(u); else if (tab === 'ads') body = dAds(u); else if (tab === 'apps') body = dApps(u);
+  else if (tab === 'received') body = dReceived(u); else if (tab === 'saved') body = dSaved(u); else if (tab === 'support') body = dSupport(u, sub);
+  else if (tab === 'profile') body = dProfile(u); else if (tab === 'billing' || (u.role === 'admin' && tab === 'payments')) body = dBilling(u, tab === 'payments'); else if (u.role === 'admin' && tab === 'desk') body = dDesk(sub); else if (u.role === 'admin' && tab === 'users') body = dUsers(); else if (u.role === 'admin') body = dAllAds();
+  return `<div class="wrap"><div class="page-h row between"><div><h1 style="font-size:30px">Dashboard</h1><p class="muted">Signed in as ${esc(u.name)} · ${u.role === 'engineer' ? 'Engineer' : u.role === 'employer' ? 'Employer' : 'Administrator'} · ${(PLANS[u.plan] || PLANS.basic).name} plan</p></div><a class="btn gold" href="#/post">+ Post an ad</a></div>
+    <div class="tabs" role="tablist">${tabs.map(([k, n]) => `<button class="${k === tab ? 'on' : ''}" onclick="location.hash='#/dashboard/${k}'">${n}</button>`).join('')}</div>${body}</div><div style="height:30px"></div>`;
+}
+function dOverview(u) {
+  const mine = getListings().filter(l => l.owner === u.id); const my = getApps().filter(a => a.userId === u.id);
+  const rec = getApps().filter(a => listingById(a.listingId)?.owner === u.id);
+  const views = mine.reduce((n, l) => n + (l.views || 0), 0);
+  const recent = [...my.map(a => ({ a, kind: 'sent' })), ...rec.map(a => ({ a, kind: 'got' }))].sort((x, y) => y.a.t - x.a.t).slice(0, 6);
+  return `<div class="kpis"><div class="card kpi"><span class="muted small">Active ads</span><b>${mine.filter(l => l.status === 'open').length}</b></div><div class="card kpi"><span class="muted small">Ad views</span><b>${views}</b></div>
+    <div class="card kpi"><span class="muted small">Sent applications</span><b>${my.length}</b></div><div class="card kpi"><span class="muted small">Received responses</span><b>${rec.length}</b></div></div>
+    <div class="grid2"><div class="card"><h3 style="margin-bottom:10px">Recent activity</h3>${recent.length ? recent.map(({ a, kind }) => { const l = listingById(a.listingId); return `<div style="padding:8px 0;border-top:1px solid var(--line)" class="small">${kind === 'sent' ? 'You responded to' : esc(userById(a.userId)?.name || 'Someone') + ' responded to'} <a href="#/listing/${a.listingId}">${esc(l?.title || 'a listing')}</a> <span class="muted">· ${ago(a.t)}</span></div>`; }).join('') : '<p class="muted">Nothing yet. Browse <a href="#/jobs">jobs</a> or <a href="#/post">post an ad</a>.</p>'}</div>
+    <div class="card"><h3 style="margin-bottom:10px">Quick actions</h3><div class="stack"><a class="btn ghost block" href="#/post">Post a new ad</a><a class="btn ghost block" href="#/messages">Open messages ${unreadCount(u.id) ? `<span class="badge">${unreadCount(u.id)}</span>` : ''}</a><a class="btn ghost block" href="#/dashboard/profile">Complete my profile</a><a class="btn ghost block" href="#/support">Ask support a question</a></div></div></div>`;
+}
+function dAds(u) {
+  const mine = getListings().filter(l => l.owner === u.id).sort((a, b) => b.created - a.created);
+  if (!mine.length) return `<div class="empty"><b>You have no ads yet</b>Post your first service, job or project. <a href="#/post">Post an ad</a></div>`;
+  return `<div class="tw"><table class="t"><thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Responses</th><th>Views</th><th></th></tr></thead><tbody>${mine.map(l => `<tr><td><a href="#/listing/${l.id}"><b>${esc(l.title)}</b></a><div class="small muted">${ago(l.created)}</div></td><td>${l.type}</td><td><span class="tag ${l.status === 'open' ? 'ok' : 'gray'}">${l.status}</span></td><td>${getApps().filter(a => a.listingId === l.id).length}</td><td>${l.views || 0}</td>
+    <td><div class="row" style="flex-wrap:nowrap;gap:6px"><a class="btn ghost sm" href="#/post?edit=${l.id}">Edit</a><button class="btn ghost sm" data-act="${l.status === 'open' ? 'ad-close' : 'ad-open'}" data-id="${l.id}">${l.status === 'open' ? 'Close' : 'Reopen'}</button><button class="btn danger sm" data-act="ad-del" data-id="${l.id}">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`;
+}
+function dApps(u) {
+  const my = getApps().filter(a => a.userId === u.id).sort((a, b) => b.t - a.t);
+  if (!my.length) return `<div class="empty"><b>No applications yet</b>Apply to a <a href="#/jobs">job</a>, send a proposal on a <a href="#/projects">project</a>, or order a <a href="#/marketplace">service</a>.</div>`;
+  return `<div class="tw"><table class="t"><thead><tr><th>Listing</th><th>Type</th><th>Amount</th><th>Status</th><th>Sent</th><th></th></tr></thead><tbody>${my.map(a => { const l = listingById(a.listingId); const st = { pending: 'warn', accepted: 'ok', rejected: 'err', withdrawn: 'gray' }[a.status];
+    return `<tr><td>${l ? `<a href="#/listing/${l.id}"><b>${esc(l.title)}</b></a>` : '<i class="muted">Listing removed</i>'}</td><td>${a.kind}</td><td>${a.amount ? money(a.amount) : '—'}</td><td><span class="tag ${st}">${a.status}</span></td><td class="small muted">${ago(a.t)}</td><td>${a.status === 'pending' ? `<button class="btn ghost sm" data-act="app-withdraw" data-id="${a.id}">Withdraw</button>` : ''}</td></tr>`; }).join('')}</tbody></table></div>`;
+}
+function dReceived(u) {
+  const rec = getApps().filter(a => listingById(a.listingId)?.owner === u.id).sort((a, b) => b.t - a.t);
+  if (!rec.length) return `<div class="empty"><b>No responses yet</b>Applications, proposals and orders on your ads will appear here.</div>`;
+  return `<div class="card">${rec.map(a => `<div class="small muted" style="padding-top:8px">On <a href="#/listing/${a.listingId}">${esc(listingById(a.listingId)?.title)}</a></div>` + appRow(a, true)).join('')}</div>`;
+}
+function dSaved(u) {
+  const ids = DB.get('saves', {})[u.id] || []; const ls = ids.map(listingById).filter(Boolean);
+  if (!ls.length) return `<div class="empty"><b>Nothing saved</b>Use “Save for later” on any listing to keep it here.</div>`;
+  return `<div class="card pad0">${ls.map(l => `<div class="jobrow"><a href="#/listing/${l.id}" style="flex:1"><b style="color:var(--navy)">${esc(l.title)}</b><div class="small muted">${l.type} · ${esc(l.location)}</div></a><div class="row">${priceText(l)}<button class="btn ghost sm" data-act="save" data-id="${l.id}">Remove</button></div></div>`).join('')}</div>`;
+}
+function dProfile(u) {
+  return `<form class="card" data-form="profile" style="max-width:760px" novalidate><div class="grid2"><div class="field"><label class="f">Full name</label><input class="in" name="name" value="${esc(u.name)}"></div><div class="field"><label class="f">City</label><select class="in" name="city">${opt(CITIES, u.city || '', 'Select…')}</select></div></div>
+    ${u.role === 'employer' ? `<div class="field"><label class="f">Company</label><input class="in" name="company" value="${esc(u.company || '')}"></div>` : ''}
+    <div class="field"><label class="f">Headline</label><input class="in" name="headline" maxlength="90" value="${esc(u.headline || '')}" placeholder="e.g. Electrical engineer — power & lighting design"></div>
+    ${u.role === 'engineer' ? `<div class="grid3"><div class="field"><label class="f">Discipline</label><select class="in" name="discipline">${opt(DISC_N, u.discipline || '', 'Select…')}</select></div><div class="field"><label class="f">Years of experience</label><input class="in" type="number" min="0" max="60" name="exp" value="${esc(u.exp ?? '')}"></div><div class="field"><label class="f">Hourly rate (${CONFIG.currency})</label><input class="in" type="number" min="0" name="rate" value="${esc(u.rate ?? '')}"></div></div>
+    <div class="field"><label class="f">Skills (comma separated)</label><input class="in" name="skills" value="${esc((u.skills || []).join(', '))}" placeholder="AutoCAD, Revit, ETAP"></div>` : ''}
+    <div class="field"><label class="f">About</label><textarea class="in" name="bio" rows="5">${esc(u.bio || '')}</textarea></div>
+    <div class="err-t" data-err></div><button class="btn gold">Save profile</button></form>
+    <form class="card" data-form="chpass" style="max-width:760px;margin-top:18px" novalidate><h3 style="margin-bottom:12px">Change password</h3><div class="grid2"><div class="field"><label class="f">Current password</label><input class="in" type="password" name="cur" autocomplete="current-password"></div><div class="field"><label class="f">New password</label><input class="in" type="password" name="np" autocomplete="new-password"></div></div><div class="err-t" data-err></div><button class="btn">Update password</button></form>`;
+}
+
+/* ---- tickets (shared) ---- */
+function ticketThread(t, admin) {
+  const st = { open: 'warn', in_progress: 'blue', resolved: 'ok' }[t.status] || 'gray';
+  return `<div class="card"><div class="row between"><div><div class="small muted">${t.id} · ${esc(t.category)} · opened ${fdate(t.created)}</div><h3 style="margin-top:2px">${esc(t.subject)}</h3><div class="small muted">${esc(t.name)} · ${esc(t.email)}</div></div><span class="tag ${st === 'blue' ? '' : st}">${t.status.replace('_', ' ')}</span></div>
+    <div style="margin:14px 0;display:grid;gap:8px">${t.replies.map(r => `<div class="bub ${r.by === 'agent' ? 'them' : 'me'}" style="max-width:100%;${r.by === 'agent' ? 'border-color:#f1dc9b;background:#fffaf0' : ''}"><b style="font-size:12px">${r.by === 'agent' ? 'ENGINEX Support' : esc(r.name)}</b><br>${esc(r.text)}<small>${fdate(r.t)}</small></div>`).join('')}</div>
+    ${t.status === 'resolved' && !admin ? `<p class="small muted">This ticket is resolved. Reply below to reopen it.</p>` : ''}
+    <form data-form="ticket-reply" data-id="${t.id}" data-admin="${admin ? 1 : ''}"><textarea class="in" name="text" rows="3" placeholder="${admin ? 'Write a reply to the customer…' : 'Add a message…'}"></textarea><div class="err-t" data-err></div><div class="row" style="margin-top:8px"><button class="btn sm gold">${admin ? 'Send reply' : 'Send message'}</button></div></form>
+    ${admin ? `<form data-form="ticket-status" data-id="${t.id}" class="row" style="margin-top:12px"><label class="small">Status</label><select class="in" name="status" style="width:auto">${['open', 'in_progress', 'resolved'].map(s => `<option value="${s}" ${t.status === s ? 'selected' : ''}>${s.replace('_', ' ')}</option>`).join('')}</select><button class="btn ghost sm">Update status</button></form>` : ''}</div>`;
+}
+function dSupport(u, sub) {
+  const mine = getTickets().filter(t => t.userId === u.id || t.email === u.email.toLowerCase()).sort((a, b) => b.updated - a.updated);
+  const open = sub && mine.find(t => t.id === sub);
+  if (open) return `<a href="#/dashboard/support" class="small">← All tickets</a><div style="margin-top:10px">${ticketThread(open, false)}</div>`;
+  return `<div class="row between" style="margin-bottom:12px"><p class="muted">Your conversations with ENGINEX support.</p><a class="btn gold sm" href="#/support">New ticket</a></div>` + (mine.length ? `<div class="tw"><table class="t"><thead><tr><th>Ticket</th><th>Subject</th><th>Status</th><th>Updated</th></tr></thead><tbody>${mine.map(t => `<tr><td><a href="#/dashboard/support/${t.id}"><b>${t.id}</b></a></td><td>${esc(t.subject)}</td><td><span class="tag ${{ open: 'warn', in_progress: '', resolved: 'ok' }[t.status]}">${t.status.replace('_', ' ')}</span></td><td class="small muted">${ago(t.updated)}</td></tr>`).join('')}</tbody></table></div>` : `<div class="empty"><b>No tickets</b>Need help? <a href="#/support">Contact support</a>.</div>`);
+}
+function dDesk(sub) {
+  const all = getTickets().sort((a, b) => b.updated - a.updated); const cur = sub && all.find(t => t.id === sub);
+  if (cur) return `<a href="#/dashboard/desk" class="small">← All tickets</a><div style="margin-top:10px">${ticketThread(cur, true)}</div>`;
+  const f = S.adminFilter; const list = all.filter(t => f === 'all' || t.status === f);
+  return `<div class="row between" style="margin-bottom:12px"><div class="row">${['all', 'open', 'in_progress', 'resolved'].map(s => `<button class="btn sm ${f === s ? '' : 'ghost'}" data-act="desk-filter" data-f="${s}">${s.replace('_', ' ')} ${s === 'all' ? '' : '(' + all.filter(t => t.status === s).length + ')'}</button>`).join('')}</div><span class="small muted">${all.length} total</span></div>
+    ${list.length ? `<div class="tw"><table class="t"><thead><tr><th>Ticket</th><th>From</th><th>Category</th><th>Subject</th><th>Status</th><th>Updated</th></tr></thead><tbody>${list.map(t => `<tr><td><a href="#/dashboard/desk/${t.id}"><b>${t.id}</b></a></td><td>${esc(t.name)}<div class="small muted">${esc(t.email)}</div></td><td>${esc(t.category)}</td><td>${esc(t.subject)}</td><td><span class="tag ${{ open: 'warn', in_progress: '', resolved: 'ok' }[t.status]}">${t.status.replace('_', ' ')}</span></td><td class="small muted">${ago(t.updated)}</td></tr>`).join('')}</tbody></table></div>` : '<div class="empty"><b>No tickets here</b>New support requests will show up in this queue.</div>'}`;
+}
+let ORDERS = null;
+function dBilling(u, admin) {
+  if (!SERVER) return '<div class="card" style="padding:20px">Billing needs the ENGINEX server (run <b>node server.js</b>).</div>';
+  if (ORDERS === null) { ORDERS = []; api('/api/pay/orders').then(o => { ORDERS = o; render(); }).catch(() => {}); }
+  const rows = ORDERS.map(o => `<tr><td>${esc(o.id)}</td>${admin ? `<td>${esc(o.userName)}<br><span class="small muted">${esc(o.email)}</span></td>` : ''}<td>${esc(o.label)}</td><td>${money(o.amount)}</td><td>${esc(o.method)}${o.ref ? '<br><span class="small muted">ref ' + esc(o.ref) + '</span>' : ''}</td><td><span class="tag">${esc(o.status)}</span></td><td>${admin && o.status === 'pending' ? `<button class="btn sm gold" data-act="pay-decide" data-id="${o.id}" data-ok="1">Approve</button> <button class="btn sm ghost" data-act="pay-decide" data-id="${o.id}" data-ok="0">Reject</button>` : fdate(o.created)}</td></tr>`).join('');
+  return `<p class="muted" style="margin-bottom:12px">${admin ? 'All payments. Approve bank transfers after checking your bank statement.' : 'Your payments and plan upgrades.'} <a href="#/dashboard/${admin ? 'payments' : 'billing'}" onclick="ORDERS=null">Refresh</a></p><div class="tw"><table class="t"><thead><tr><th>Order</th>${admin ? '<th>Member</th>' : ''}<th>Item</th><th>Amount</th><th>Method</th><th>Status</th><th>${admin ? 'Action' : 'Date'}</th></tr></thead><tbody>${rows || '<tr><td colspan="7" class="muted">No payments yet.</td></tr>'}</tbody></table></div>`;
+}
+function payModal(kind, item, label, amount) {
+  openModal(`<h3>Checkout</h3><p>${esc(label)} — <b>${money(amount)}</b></p>${SRV.gateway ? `<button class="btn gold block" data-act="pay" data-kind="${kind}" data-item="${item}" data-method="card">Pay by card (mada / Visa / Mastercard)</button>` : ''}<button class="btn block ${SRV.gateway ? 'ghost' : 'gold'}" style="margin-top:10px" data-act="pay" data-kind="${kind}" data-item="${item}" data-method="bank">Pay by bank transfer</button>${SRV.gateway ? '' : '<p class="small muted" style="margin-top:10px">Card payments appear here once the site owner sets a payment-gateway key.</p>'}`);
+}
+function dUsers() {
+  const us = getUsers().filter(u => !u.demo);
+  return `<p class="muted" style="margin-bottom:12px">Registered accounts (${us.length}). Demo profiles are hidden.</p><div class="tw"><table class="t"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Plan</th><th>Ads</th><th>Joined</th><th></th></tr></thead><tbody>${us.map(u => `<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${u.role}</td><td>${u.plan || 'basic'}</td><td>${getListings().filter(l => l.owner === u.id).length}</td><td class="small muted">${ago(u.created)}</td><td>${u.role === 'admin' ? '' : `<button class="btn ghost sm" data-act="reset-pass" data-id="${u.id}">Reset password</button>`}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function dAllAds() {
+  const ls = getListings().sort((a, b) => b.created - a.created);
+  return `<div class="tw"><table class="t"><thead><tr><th>Title</th><th>Type</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody>${ls.map(l => `<tr><td><a href="#/listing/${l.id}">${esc(l.title)}</a></td><td>${l.type}</td><td>${esc(userById(l.owner)?.name || '—')}</td><td>${l.status}</td><td><button class="btn danger sm" data-act="ad-del" data-id="${l.id}">Remove</button></td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ---------- messages ---------- */
+function vMessages(to, q) {
+  const u = me(); const target = to ? userById(to) : null;
+  let ts = getThreads().filter(t => t.users.includes(u.id));
+  if (target && !ts.find(t => t.key === tkey(u.id, target.id))) ts.push({ key: tkey(u.id, target.id), users: [u.id, target.id], msgs: [], read: {} });
+  ts.sort((a, b) => (b.msgs.at(-1)?.t || now()) - (a.msgs.at(-1)?.t || now()));
+  const active = target ? ts.find(t => t.key === tkey(u.id, target.id)) : ts[0];
+  const other = active ? userById(active.users.find(x => x !== u.id)) : null;
+  if (active) markRead(active.key, u.id);
+  return `<div class="wrap"><div class="page-h"><h1 style="font-size:30px">Messages</h1></div>
+    <div class="msgs"><div class="convs">${ts.length ? ts.map(t => { const o = userById(t.users.find(x => x !== u.id)); const last = t.msgs.at(-1); const un = t.msgs.filter(m => m.from !== u.id && m.t > (t.read[u.id] || 0)).length;
+      return `<a class="conv ${active && t.key === active.key ? 'on' : ''}" href="#/messages/${o?.id}">${avatar(o)}<div class="grow" style="min-width:0"><div class="row between" style="flex-wrap:nowrap"><b style="font-size:14px">${esc(o?.name)}</b>${un ? `<span class="badge">${un}</span>` : ''}</div><div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(last?.text || 'Start the conversation')}</div></div></a>`; }).join('') : '<div style="padding:20px" class="muted small">No conversations yet. Open a profile or listing and press Message.</div>'}</div>
+      <div class="thread">${active && other ? `<div class="row" style="padding:12px 16px;border-bottom:1px solid var(--line)">${avatar(other)}<div><b>${esc(other.name)}</b><div class="small muted">${esc(other.headline || other.role)}${other.demo ? ' · demo profile (auto-replies)' : ''}</div></div></div>
+        <div class="thread-b">${active.msgs.length ? active.msgs.map(m => `<div class="bub ${m.from === u.id ? 'me' : 'them'}">${esc(m.text)}<small>${fdate(m.t)}</small></div>`).join('') : '<p class="muted small" style="margin:auto">Say hello — your message will appear here.</p>'}</div>
+        <form class="thread-f" data-form="thread-send" data-to="${other.id}"><input class="in" name="text" placeholder="Write a message…" autocomplete="off" aria-label="Message"><button class="btn gold">Send</button></form>` : '<div class="empty" style="margin:auto;border:0"><b>Select a conversation</b></div>'}</div></div></div><div style="height:30px"></div>`;
+}
+function refreshMsgUI() {
+  renderChrome();
+  if (parse().parts[0] === 'messages') { const inp = $('.thread-f input'); const v = inp?.value; const f = document.activeElement === inp; render(); const i2 = $('.thread-f input'); if (i2 && v) i2.value = v; if (i2 && f) i2.focus(); }
+}
+
+/* ---------- support helpline ---------- */
+function vSupport() {
+  const u = me(); const c = CONFIG.support;
+  const mineIds = DB.get('guesttix', []); const mine = getTickets().filter(t => u ? (t.userId === u.id || t.email === u.email.toLowerCase()) : mineIds.includes(t.id)).sort((a, b) => b.updated - a.updated);
+  const tr = S.tracked && getTickets().find(t => t.id === S.tracked && (!u || t.userId === u.id || t.email === u.email.toLowerCase() || mineIds.includes(t.id)));
+  return `<section class="hero"><div class="wrap" style="padding:38px 20px"><h1 style="font-size:36px">Support helpline</h1><p class="lead muted" style="margin-top:10px;font-size:17px;max-width:620px">Have a question about an account, an ad, a job or a payment? Ask here and our team will answer.</p>
+    <div class="row" style="margin-top:18px"><button class="btn gold" data-act="chat-open">💬 Chat with the assistant</button><button class="btn ghost" data-act="goto" data-to="ask">Open a ticket</button><button class="btn ghost" data-act="goto" data-to="faq">Read the FAQ</button></div></div></section>
+    <div class="wrap sect tight"><div class="grid3" style="margin-bottom:26px">
+      <div class="card"><h3>📞 Helpline</h3><p class="muted small" style="margin:6px 0">${c.phone ? `<a href="tel:${esc(c.phone.replace(/\s/g, ''))}"><b>${esc(c.phone)}</b></a><br>` : ''}${esc(c.hours)}</p>${c.phone ? '' : '<p class="small muted">Phone line not published yet — use a ticket or chat.</p>'}</div>
+      <div class="card"><h3>✉️ Email & WhatsApp</h3><p class="muted small" style="margin:6px 0">${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a><br>` : ''}${c.whatsapp ? `<a href="https://wa.me/${esc(c.whatsapp)}" target="_blank" rel="noopener">Chat on WhatsApp</a>` : ''}${!c.email && !c.whatsapp ? 'Use a ticket below — every request gets a reference number you can track.' : ''}</p></div>
+      <div class="card"><h3>🎫 Track a ticket</h3><form data-form="ticket-track" class="row" style="margin-top:8px;flex-wrap:nowrap"><input class="in" name="id" placeholder="EX-1001" aria-label="Ticket number"><input class="in" name="email" type="email" placeholder="Your email" aria-label="Email"><button class="btn sm">Find</button></form><div class="err-t" data-err></div></div></div>
+    ${tr ? `<div style="margin-bottom:26px"><h2 style="margin-bottom:12px">Ticket ${tr.id}</h2>${ticketThread(tr, false)}</div>` : ''}
+    <div class="split" id="ask"><div><h2 style="margin-bottom:14px">Ask a question</h2><form class="card" data-form="ticket-new" novalidate>
+      <div class="grid2"><div class="field"><label class="f">Your name</label><input class="in" name="name" value="${esc(u?.name || '')}" autocomplete="name"></div><div class="field"><label class="f">Email</label><input class="in" name="email" type="email" value="${esc(u?.email || '')}" autocomplete="email"></div></div>
+      <div class="field"><label class="f">Topic</label><select class="in" name="category">${opt(TCATS, '')}</select></div>
+      <div class="field"><label class="f">Subject</label><input class="in" name="subject" maxlength="100" placeholder="Short summary of your question"></div>
+      <div class="field"><label class="f">Message</label><textarea class="in" name="message" rows="6" placeholder="Tell us what happened and what you expected."></textarea></div>
+      <div class="err-t" data-err></div><button class="btn gold">Send to support</button></form>
+      ${mine.length ? `<h3 style="margin:24px 0 10px">Your tickets</h3><div class="card pad0">${mine.map(t => `<a class="jobrow" href="${u ? '#/dashboard/support/' + t.id : '#/support'}" ${u ? '' : `data-act="track" data-id="${t.id}"`}><div><b>${t.id}</b> · ${esc(t.subject)}<div class="small muted">${ago(t.updated)}</div></div><span class="tag ${{ open: 'warn', in_progress: '', resolved: 'ok' }[t.status]}">${t.status.replace('_', ' ')}</span></a>`).join('')}</div>` : ''}</div>
+      <aside id="faq"><h2 style="margin-bottom:14px">Common questions</h2>${FAQ.map(([q, a]) => `<details class="faq"><summary>${esc(q)}</summary><div>${esc(a)}</div></details>`).join('')}</aside></div></div><div style="height:30px"></div>`;
+}
+
+/* ---------- pricing / about ---------- */
+function vPricing() {
+  const u = me();
+  return `<div class="wrap"><div class="page-h" style="text-align:center"><h1 style="font-size:36px">Simple plans for every team</h1><p class="muted" style="margin-top:8px">Start free. Switch plans any time. Pay by card (mada / Visa / Mastercard) or bank transfer. Plans activate after payment is confirmed.</p></div>
+    <div class="grid3">${Object.entries(PLANS).map(([k, p]) => `<div class="card price-card ${k === 'pro' ? 'best' : ''}">${k === 'pro' ? '<span class="tag gold" style="align-self:flex-start">Most popular</span>' : ''}<h3>${p.name}</h3><div class="price-big">${p.price === null ? 'Custom' : p.price === 0 ? 'Free' : money(p.price)}<span class="small muted" style="font-weight:500">${p.price ? ' / month' : ''}</span></div><ul>${p.feats.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
+      ${k === 'ent' ? `<button class="btn block" data-act="contact-sales">Contact sales</button>` : u && (u.plan || 'basic') === k ? '<button class="btn ghost block" disabled>Current plan</button>' : `<button class="btn ${k === 'pro' ? 'gold' : ''} block" data-act="plan" data-plan="${k}">${u ? 'Switch to ' + p.name : 'Get started'}</button>`}</div>`).join('')}</div></div><div style="height:40px"></div>`;
+}
+function vAbout() {
+  return `<div class="wrap"><div class="page-h"><h1 style="font-size:36px">About ENGINEX</h1></div><div class="split"><div class="stack"><div class="card"><h3>Why ENGINEX</h3><p class="muted" style="margin-top:8px">Finding the right engineer — or the right engineering work — usually depends on who you already know. ENGINEX puts engineers, contractors and developers on one platform so scope, price and availability are visible from the start.</p></div>
+    <div class="card"><h3>How it works</h3><ol style="margin:10px 0 0;padding-left:20px" class="muted"><li>Create a free account as an engineer or employer.</li><li>Post a service, job or project — or browse what is already live.</li><li>Apply, send proposals or order a service, then agree the details in Messages.</li></ol></div></div>
+    <aside class="card"><h3>Need help?</h3><p class="muted small" style="margin:8px 0 14px">Our support helpline answers questions about accounts, ads and applications.</p><a class="btn block" href="#/support">Go to support</a></aside></div></div><div style="height:40px"></div>`;
+}
+
+/* ============ actions, forms, chat, init ============ */
+function openModal(html) {
+  $('#modalRoot').innerHTML = `<div class="ov" data-act="modal-bg"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+  setTimeout(() => $('#modalRoot input:not([type=hidden]), #modalRoot textarea')?.focus(), 30);
+}
+const closeModal = () => { $('#modalRoot').innerHTML = ''; };
+function reqLogin() { const u = me(); if (!u) { S.next = location.hash; toast('Please sign in or create an account first.'); go('#/signin'); } return u; }
+function showErr(f, msg) { const e = $('[data-err]', f); if (e) e.textContent = msg; else toast(msg, 'err'); }
+function appModal(l, kind) {
+  const title = { apply: 'Apply for this job', propose: 'Submit your proposal', order: 'Order this service' }[kind];
+  return `<h3>${title}</h3><p class="muted small" style="margin-bottom:14px">${esc(l.title)}</p><form data-form="apply" data-id="${l.id}" data-kind="${kind}" novalidate>
+    ${kind === 'propose' ? `<div class="grid2"><div class="field"><label class="f">Your price (${CONFIG.currency})</label><input class="in" name="amount" type="number" min="1" value="${esc(l.price)}"></div><div class="field"><label class="f">Delivery (days)</label><input class="in" name="days" type="number" min="1"></div></div>` : ''}
+    ${kind === 'apply' ? `<div class="field"><label class="f">Expected monthly salary (${CONFIG.currency}, optional)</label><input class="in" name="amount" type="number" min="0"></div>` : ''}
+    <div class="field"><label class="f">${kind === 'order' ? 'What do you need?' : 'Cover note'}</label><textarea class="in" name="message" rows="5" placeholder="${kind === 'order' ? 'Describe your project, drawings available and deadline.' : 'Why are you a good fit? Mention relevant experience.'}"></textarea><div class="hint">Minimum 20 characters.</div></div>
+    <div class="err-t" data-err></div><div class="row"><button class="btn gold">${kind === 'order' ? 'Place order' : 'Send'}</button><button type="button" class="btn ghost" data-act="modal-close">Cancel</button></div></form>`;
+}
+const setListing = (id, fn) => { DB.set('listings', getListings().map(l => l.id === id ? fn(l) : l)); };
+const setApp = (id, fn) => { DB.set('apps', getApps().map(a => a.id === id ? fn(a) : a)); };
+
+const ACT = {
+  menu: () => $('#umenu')?.classList.toggle('open'),
+  burger: () => $('#links').classList.toggle('open'),
+  signout: () => { DB.set('session', null); TOKEN = null; try { localStorage.removeItem('ex:token'); } catch (e) {} S.tracked = null; chatInit(); chatRender(); toast('You have been signed out.', 'ok'); go('#/'); },
+  'modal-close': closeModal,
+  'modal-bg': (el, e) => { if (e.target === el) closeModal(); },
+  clear: el => { const t = el.dataset.type; F[t] = { ...{ q: '', d: '', loc: '', s: t === 'engineer' ? 'rating' : 'new' }, ...(t === 'job' ? { jt: '' } : {}) }; render(); },
+  save: el => { const u = reqLogin(); if (!u) return; const all = DB.get('saves', {}); const a = all[u.id] || []; const i = a.indexOf(el.dataset.id); if (i >= 0) a.splice(i, 1); else a.push(el.dataset.id); all[u.id] = a; DB.set('saves', all); toast(i >= 0 ? 'Removed from saved.' : 'Saved for later.', 'ok'); render(); },
+  apply: el => { const u = reqLogin(); if (!u) return; const l = listingById(el.dataset.id); openModal(appModal(l, 'apply')); },
+  propose: el => { const u = reqLogin(); if (!u) return; openModal(appModal(listingById(el.dataset.id), 'propose')); },
+  order: el => { const u = reqLogin(); if (!u) return; openModal(appModal(listingById(el.dataset.id), 'order')); },
+  'msg-open': el => {
+    const u = reqLogin(); if (!u) return; const to = userById(el.dataset.to); if (!to) return toast('That user no longer exists.', 'err');
+    if (to.id === u.id) return toast('That is your own profile.');
+    openModal(`<h3>Message ${esc(to.name)}</h3><form data-form="send-msg" data-to="${to.id}" data-ctx="${esc(el.dataset.ctx || '')}" novalidate>${el.dataset.ctx ? `<p class="small muted" style="margin-bottom:10px">About: ${esc(el.dataset.ctx)}</p>` : ''}<div class="field"><textarea class="in" name="text" rows="5" placeholder="Write your message…"></textarea></div><div class="err-t" data-err></div><div class="row"><button class="btn gold">Send message</button><button type="button" class="btn ghost" data-act="modal-close">Cancel</button></div></form>`);
+  },
+  'ad-close': el => { setListing(el.dataset.id, l => ({ ...l, status: 'closed' })); toast('Listing closed. It no longer appears in search.', 'ok'); render(); },
+  'ad-open': el => {
+    const u = me(); const l = listingById(el.dataset.id);
+    if (l.owner === u.id && activeAds(u.id) >= adLimit(u)) return toast('Your plan\'s active ad limit is reached. Close another ad or upgrade.', 'err');
+    setListing(el.dataset.id, x => ({ ...x, status: 'open' })); toast('Listing is live again.', 'ok'); render();
+  },
+  'ad-del': el => {
+    if (!confirm('Delete this ad permanently? Applications on it will be removed too.')) return;
+    const id = el.dataset.id; DB.set('listings', getListings().filter(l => l.id !== id)); DB.set('apps', getApps().filter(a => a.listingId !== id));
+    toast('Ad deleted.', 'ok'); if (parse().parts[0] === 'listing') go('#/dashboard/ads'); else render();
+  },
+  'app-withdraw': el => { setApp(el.dataset.id, a => ({ ...a, status: 'withdrawn' })); toast('Application withdrawn.', 'ok'); render(); },
+  'app-accept': el => respond(el.dataset.id, 'accepted'),
+  'app-reject': el => respond(el.dataset.id, 'rejected'),
+  'desk-filter': el => { S.adminFilter = el.dataset.f; render(); },
+  'reset-pass': async el => {
+    const t = 'Tmp-' + Math.random().toString(36).slice(2, 8) + Math.floor(Math.random() * 90 + 10);
+    const u = userById(el.dataset.id); u.pass = await hash(t); saveUser(u);
+    openModal(`<h3>Temporary password</h3><p>Give this password to <b>${esc(u.name)}</b>. They should change it from Dashboard → Profile after signing in.</p><p style="font-size:22px;font-weight:800;margin:14px 0;letter-spacing:.04em">${esc(t)}</p><button class="btn" data-act="modal-close">Done</button>`);
+  },
+  plan: el => {
+    const u = me(); if (!u) return go('#/register'); const k = el.dataset.plan;
+    if (!PLANS[k].price || !SERVER) { u.plan = k; saveUser(u); toast(`Switched to the ${PLANS[k].name} plan.`, 'ok'); return render(); }
+    payModal('plan', k, PLANS[k].name + ' plan – 1 month', PLANS[k].price);
+  },
+  pay: async el => { try { const r = await api('/api/pay/checkout', { method: 'POST', body: { kind: el.dataset.kind, item: el.dataset.item, method: el.dataset.method } }); if (r.redirect) return location.href = r.redirect;
+      const b = r.bank; openModal(`<h3>Bank transfer</h3><p>Transfer <b>${money(r.order.amount)}</b> and use <b>${esc(r.order.id)}</b> as the reference.</p><p class="small"><b>${esc(b.name)}</b><br>${esc(b.account)}<br>IBAN: ${esc(b.iban)}</p><form data-form="receipt"><input type="hidden" name="id" value="${r.order.id}"><label class="f">Transfer reference / receipt no.</label><input class="in" name="ref" required><button class="btn gold block" style="margin-top:12px">I have paid</button></form><p class="small muted">An admin confirms your payment, then your upgrade is activated.</p>`); } catch (e) { toast('Payment could not be started. Sign in again.', 'err'); } },
+  'pay-decide': async el => { await api('/api/pay/decide', { method: 'POST', body: { id: el.dataset.id, approve: el.dataset.ok === '1' } }); await loadServer(); toast('Order updated.', 'ok'); render(); },
+  'contact-sales': () => {
+    const u = me();
+    openModal(`<h3>Contact sales</h3><form data-form="ticket-new" novalidate><input type="hidden" name="category" value="Payments & billing"><input type="hidden" name="subject" value="Enterprise plan enquiry">
+      <div class="field"><label class="f">Name</label><input class="in" name="name" value="${esc(u?.name || '')}"></div><div class="field"><label class="f">Email</label><input class="in" name="email" type="email" value="${esc(u?.email || '')}"></div>
+      <div class="field"><label class="f">Tell us about your team</label><textarea class="in" name="message" rows="4" placeholder="Team size, number of ads, what you need."></textarea></div><div class="err-t" data-err></div><div class="row"><button class="btn gold">Send</button><button type="button" class="btn ghost" data-act="modal-close">Cancel</button></div></form>`);
+  },
+  track: el => { S.tracked = el.dataset.id; render(); },
+  goto: el => { $('#' + el.dataset.to)?.scrollIntoView({ behavior: 'smooth' }); },
+  'chat-open': () => { S.chatOpen = true; chatRender(); },
+  'chat-close': () => { S.chatOpen = false; chatRender(); },
+  chip: el => chatUser(el.dataset.text),
+  'chat-human': () => chatUser('Talk to a person')
+};
+function respond(id, status) {
+  const a = getApps().find(x => x.id === id); const l = listingById(a.listingId); const u = me();
+  setApp(id, x => ({ ...x, status }));
+  sendMsg(u.id, a.userId, `Your ${a.kind === 'order' ? 'order' : a.kind === 'propose' ? 'proposal' : 'application'} for “${l.title}” was ${status === 'accepted' ? 'accepted. Let\'s discuss next steps here.' : 'declined. Thank you for your interest.'}`, true);
+  toast(status === 'accepted' ? 'Accepted — the applicant has been messaged.' : 'Declined — the applicant has been notified.', 'ok'); render();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!e.target.closest('.menu')) $('#umenu')?.classList.remove('open');
+  if (!el) return;
+  const f = ACT[el.dataset.act]; if (!f) return;
+  if (el.tagName === 'A' && !el.getAttribute('href')?.startsWith('#/')) e.preventDefault();
+  f(el, e);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); if (S.chatOpen) { S.chatOpen = false; chatRender(); } } });
+document.addEventListener('input', e => {
+  const t = e.target; if (!t.dataset?.f) return; const [type, key] = t.dataset.f.split('.'); F[type][key] = t.value;
+  const r = $('#results'); if (r) r.innerHTML = resultsHTML(type);
+});
+document.addEventListener('change', e => { if (e.target.name === 'type' && e.target.closest('form[data-form=post]')) syncPostType(e.target.closest('form')); });
+window.addEventListener('storage', () => { const open = $('#umenu')?.classList.contains('open'); renderChrome(); if (open) $('#umenu')?.classList.add('open'); });
+
+/* ---------- form handlers ---------- */
+const FORMS = {
+  'home-search': d => go(`#/${d.t}?q=${encodeURIComponent(d.q || '')}`),
+  async receipt(d) { await api('/api/pay/receipt', { method: 'POST', body: d }); closeModal(); toast('Thanks — we will confirm your payment shortly.', 'ok'); go('#/dashboard/billing'); },
+  news: d => { if (!validEmail(d.email || '')) return toast('Enter a valid email address.', 'err'); DB.set('news', [...DB.get('news', []), { email: d.email, t: now() }]); toast('Subscribed. Thanks!', 'ok'); $('form[data-form=news]').reset(); },
+  async login(d) {
+    const em = (d.email || '').trim().toLowerCase(); if (!validEmail(em) || !d.password) return 'Enter your email and password.';
+    let u;
+    if (SERVER) { try { const r = await api('/api/login', { method: 'POST', body: { email: em, hash: await hash(d.password) } }); TOKEN = r.token; localStorage.setItem('ex:token', TOKEN); await loadServer(); u = userById(r.id); } catch (e) { return 'Email or password is incorrect.'; } }
+    else { u = getUsers().find(x => (x.email || '').toLowerCase() === em); if (!u || u.pass !== await hash(d.password)) return 'Email or password is incorrect.'; }
+    DB.set('session', u.id); S.tracked = null; chatInit(); chatRender(); toast(`Welcome back, ${u.name.split(' ')[0]}.`, 'ok'); const n = S.next || '#/dashboard'; S.next = null; go(n);
+  },
+  async register(d) {
+    const name = (d.name || '').trim(), em = (d.email || '').trim().toLowerCase();
+    if (name.length < 3) return 'Enter your full name.'; if (!validEmail(em)) return 'Enter a valid email address.';
+    if (!d.password || d.password.length < 8 || !/[A-Za-z]/.test(d.password) || !/\d/.test(d.password)) return 'Password needs 8+ characters with at least one letter and one number.';
+    if (d.password !== d.password2) return 'The two passwords do not match.'; if (!d.terms) return 'Please accept the terms to continue.';
+    if (!SERVER && getUsers().some(u => (u.email || '').toLowerCase() === em)) return 'An account with this email already exists. Try signing in.';
+    const role = d.role === 'employer' ? 'employer' : 'engineer';
+    const u = { id: 'u_' + uid(), name, email: em, pass: await hash(d.password), role, city: d.city, discipline: d.discipline || '', headline: '', bio: '', skills: [], plan: 'basic', created: now() };
+    if (SERVER) { try { const r = await api('/api/register', { method: 'POST', body: { user: u } }); u.id = r.id; TOKEN = r.token; localStorage.setItem('ex:token', TOKEN); await loadServer(); } catch (e) { return 'An account with this email already exists. Try signing in.'; } }
+    else DB.set('users', [...getUsers(), u]);
+    DB.set('session', u.id); S.tracked = null; chatInit(); chatRender(); toast('Account created. Welcome to ENGINEX!', 'ok');
+    const n = S.next || '#/dashboard/profile'; S.next = null; go(n);
+  },
+  post(d, f) {
+    const u = me(); const edit = f.dataset.edit ? listingById(f.dataset.edit) : null; const t = d.type;
+    if ((d.title || '').trim().length < 8) return 'Title must be at least 8 characters.'; if (!d.discipline) return 'Choose a discipline.'; if (!d.location) return 'Choose a location.';
+    const price = Number(d.price); if (!price || price < 1) return 'Enter a price greater than zero.'; if ((d.desc || '').trim().length < 40) return 'Description must be at least 40 characters.';
+    if (t === 'service' && !(Number(d.delivery) >= 1)) return 'Enter the delivery time in days.'; if (t === 'project' && !(d.duration || '').trim()) return 'Enter the expected project duration.';
+    if (!edit && activeAds(u.id) >= adLimit(u)) return `You have reached the ${adLimit(u)}-ad limit on the ${PLANS[u.plan || 'basic'].name} plan. Close an ad or upgrade on the Pricing page.`;
+    const extra = t === 'service' ? { delivery: Number(d.delivery), pricing: 'Starting at' } : t === 'job' ? { jobType: d.jobType, level: d.level, deadline: d.deadline || '' } : { duration: d.duration.trim(), bids: d.bids, deadline: d.deadline || '' };
+    const base = { title: d.title.trim(), discipline: d.discipline, location: d.location, price, desc: d.desc.trim(), extra };
+    if (edit) { setListing(edit.id, l => ({ ...l, ...base })); toast('Changes saved.', 'ok'); go('#/listing/' + edit.id); }
+    else { const l = { id: 'l_' + uid(), type: t, owner: u.id, status: 'open', created: now(), views: 0, ...base }; DB.set('listings', [l, ...getListings()]); toast('Published — your ad is live.', 'ok'); go('#/listing/' + l.id); }
+  },
+  apply(d, f) {
+    const u = me(); const l = listingById(f.dataset.id); const kind = f.dataset.kind; if (!l || l.status !== 'open') return 'This listing is no longer open.';
+    if ((d.message || '').trim().length < 20) return 'Please write at least 20 characters.';
+    if (kind === 'propose' && !(Number(d.amount) > 0)) return 'Enter your price.';
+    if (getApps().some(a => a.listingId === l.id && a.userId === u.id && a.status !== 'withdrawn')) return 'You have already responded to this listing.';
+    const a = { id: 'a_' + uid(), listingId: l.id, userId: u.id, ownerId: l.owner, kind, message: d.message.trim(), amount: kind === 'order' ? l.price : Number(d.amount) || 0, days: Number(d.days) || 0, status: 'pending', t: now() };
+    DB.set('apps', [...getApps(), a]);
+    sendMsg(u.id, l.owner, `New ${kind === 'order' ? 'order' : kind === 'propose' ? 'proposal' : 'application'} on “${l.title}”.\n\n${a.message}`, true);
+    closeModal(); toast(kind === 'order' ? 'Order placed. The seller has been notified.' : 'Sent. The poster has been notified.', 'ok'); render();
+  },
+  profile(d) {
+    const u = me(); if ((d.name || '').trim().length < 3) return 'Name is too short.';
+    Object.assign(u, { name: d.name.trim(), city: d.city, headline: (d.headline || '').trim(), bio: (d.bio || '').trim() });
+    if (u.role === 'employer') u.company = (d.company || '').trim();
+    if (u.role === 'engineer') Object.assign(u, { discipline: d.discipline, exp: d.exp === '' ? undefined : Number(d.exp), rate: d.rate === '' ? undefined : Number(d.rate), skills: (d.skills || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 12) });
+    saveUser(u); toast('Profile saved.', 'ok'); render();
+  },
+  async chpass(d) {
+    const u = me();
+    if (!d.np || d.np.length < 8 || !/[A-Za-z]/.test(d.np) || !/\d/.test(d.np)) return 'New password needs 8+ characters with a letter and a number.';
+    if (SERVER) { try { await api('/api/password', { method: 'POST', body: { current: await hash(d.cur || ''), next: await hash(d.np) } }); } catch (e) { return (e && e.error) || 'Could not change the password.'; } }
+    else { if (u.pass !== await hash(d.cur || '')) return 'Current password is incorrect.'; u.pass = await hash(d.np); saveUser(u); } toast('Password updated.', 'ok'); $('form[data-form=chpass]').reset();
+  },
+  'send-msg'(d, f) { const u = me(); if ((d.text || '').trim().length < 2) return 'Write a message first.'; sendMsg(u.id, f.dataset.to, (f.dataset.ctx ? `Re: ${f.dataset.ctx}\n\n` : '') + d.text.trim()); closeModal(); toast('Message sent. Find it under Messages.', 'ok'); renderChrome(); },
+  'thread-send'(d, f) { const u = me(); if (!(d.text || '').trim()) return; sendMsg(u.id, f.dataset.to, d.text.trim()); render(); setTimeout(() => $('.thread-f input')?.focus(), 0); },
+  'ticket-new'(d) {
+    const u = me(); const name = (d.name || '').trim(), em = (d.email || '').trim();
+    if (name.length < 2) return 'Enter your name.'; if (!validEmail(em)) return 'Enter a valid email so we can reply.'; if (!d.category) return 'Choose a topic.';
+    if ((d.subject || '').trim().length < 5) return 'Add a short subject.'; if ((d.message || '').trim().length < 15) return 'Please describe your question in at least 15 characters.';
+    const t = createTicket({ userId: u?.id, name, email: em, category: d.category, subject: d.subject.trim(), message: d.message.trim() });
+    t.replies.push({ by: 'agent', name: 'ENGINEX Support', text: `Thanks ${name.split(' ')[0]} — we have received your request (reference ${t.id}). A support agent will reply here. You can track it any time with your ticket number and email. (Automatic message)`, t: now() }); saveTicket(t);
+    if (!u) DB.set('guesttix', [...DB.get('guesttix', []), t.id]);
+    S.tracked = t.id; closeModal(); toast(`Ticket ${t.id} created.`, 'ok'); if (parse().parts[0] === 'support') render(); else go('#/support');
+  },
+  'ticket-reply'(d, f) {
+    const t = getTickets().find(x => x.id === f.dataset.id); const u = me(); const admin = f.dataset.admin === '1' && u?.role === 'admin';
+    if ((d.text || '').trim().length < 2) return 'Write a message first.';
+    t.replies.push({ by: admin ? 'agent' : 'user', name: admin ? 'ENGINEX Support' : (u?.name || t.name), text: d.text.trim(), t: now() }); t.updated = now();
+    if (admin && t.status === 'open') t.status = 'in_progress'; if (!admin && t.status === 'resolved') t.status = 'open';
+    saveTicket(t); toast('Sent.', 'ok'); render();
+  },
+  'ticket-status'(d, f) { const t = getTickets().find(x => x.id === f.dataset.id); t.status = d.status; t.updated = now(); saveTicket(t); toast('Status updated.', 'ok'); render(); },
+  'ticket-track'(d, f) {
+    const t = getTickets().find(x => x.id.toLowerCase() === (d.id || '').trim().toLowerCase());
+    if (!t || t.email !== (d.email || '').trim().toLowerCase()) return 'No ticket matches that number and email.';
+    S.tracked = t.id; render();
+  },
+  'chat-send'(d) { const v = (d.text || '').trim(); if (v) chatUser(v); }
+};
+document.addEventListener('submit', async e => {
+  const f = e.target.closest('form[data-form]'); if (!f) return; e.preventDefault();
+  const h = FORMS[f.dataset.form]; if (!h) return;
+  const eln = $('[data-err]', f); if (eln) eln.textContent = '';
+  try { const err = await h(Object.fromEntries(new FormData(f)), f); if (err) showErr(f, err); } catch (x) { console.error(x); showErr(f, 'Something went wrong: ' + x.message); }
+});
+
+/* ---------- support chat assistant ---------- */
+function chatInit() {
+  S.chat = { msgs: [{ from: 'bot', text: 'Hi! I\'m the ENGINEX assistant. Ask me anything about accounts, ads, jobs or plans — or talk to a person.', chips: ['How do I post an ad?', 'Create an account', 'How do I apply for a job?', 'Talk to a person'] }], step: null, draft: {} };
+}
+function chatRender() {
+  const box = $('#chatBox'); const c = S.chat; box.classList.toggle('open', S.chatOpen); $('#chatFab').classList.toggle('hide', S.chatOpen);
+  if (!S.chatOpen) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="chat-h"><div><b>ENGINEX Support</b><div class="small" style="color:#c9d5e8">Assistant · instant answers</div></div><button class="btn sm ghost" data-act="chat-close" aria-label="Close chat">✕</button></div>
+    <div class="chat-b" id="chatB">${c.msgs.map(m => `<div class="bub ${m.from === 'me' ? 'me' : 'them'}">${esc(m.text)}${m.link ? ` <a href="${m.link}" ${m.link.startsWith('#') ? '' : 'target="_blank"'}>${esc(m.linkText || 'Open')}</a>` : ''}${m.chips ? `<div class="chips">${m.chips.map(t => `<button class="chip" data-act="chip" data-text="${esc(t)}">${esc(t)}</button>`).join('')}</div>` : ''}</div>`).join('')}</div>
+    <form class="chat-f" data-form="chat-send"><input class="in" name="text" placeholder="Type your question…" autocomplete="off" aria-label="Your question"><button class="btn gold sm">Send</button></form>`;
+  const b = $('#chatB'); b.scrollTop = b.scrollHeight; $('.chat-f input', box).focus();
+}
+function botSay(text, extra = {}) { S.chat.msgs.push({ from: 'bot', text, ...extra }); }
+function chatUser(text) {
+  const c = S.chat; c.msgs.push({ from: 'me', text }); const u = me(); const low = text.toLowerCase();
+  if (c.step === 'issue') {
+    c.draft.message = text;
+    if (u) { makeChatTicket(u.name, u.email); } else { c.step = 'email'; botSay('Thanks. What email address should the support team reply to?'); }
+  } else if (c.step === 'email') {
+    if (!validEmail(text.trim())) botSay('That doesn\'t look like a valid email. Please type it again (e.g. name@company.com).');
+    else makeChatTicket(text.trim().split('@')[0], text.trim());
+  } else if (/\b(person|human|agent|ticket|helpline|call)\b/.test(low)) {
+    c.step = 'issue'; botSay('Sure. Please describe your question in one message and I\'ll send it to the support team as a ticket.');
+  } else if (/^(hi|hello|hey|salam|assalam|مرحبا)\b/.test(low)) {
+    botSay('Hello! What can I help you with?', { chips: ['How do I post an ad?', 'Create an account', 'Talk to a person'] });
+  } else if (/^(thanks|thank you|shukran)/.test(low)) {
+    botSay('You\'re welcome! Anything else?');
+  } else {
+    let best = null, score = 0; FAQ.forEach(([q, a, kw]) => { const s = kw.filter(k => low.includes(k)).length + (low.includes(q.toLowerCase().slice(0, 12)) ? 2 : 0); if (s > score) { score = s; best = [q, a]; } });
+    if (best) {
+      const l = /post|ad\b|advert|listing/.test(low) ? ['#/post', 'Post an ad'] : /account|register|sign up|create/.test(low) ? ['#/register', 'Create account'] : /plan|pricing|upgrade/.test(low) ? ['#/pricing', 'See plans'] : /job|apply|proposal/.test(low) ? ['#/jobs', 'Browse jobs'] : null;
+      botSay(best[1], { ...(l ? { link: l[0], linkText: l[1] } : {}), chips: ['Talk to a person'] });
+    } else botSay('I\'m not sure about that one. I can send it to a support agent, or you can browse the FAQ.', { link: '#/support#faq', linkText: 'Open FAQ', chips: ['Talk to a person'] });
+  }
+  chatRender();
+}
+function makeChatTicket(name, email) {
+  const c = S.chat; const u = me();
+  const t = createTicket({ userId: u?.id, name, email, category: 'Other', subject: c.draft.message.slice(0, 60), message: c.draft.message });
+  t.replies.push({ by: 'agent', name: 'ENGINEX Support', text: `Thanks — we received your request (reference ${t.id}). A support agent will reply here. (Automatic message)`, t: now() }); saveTicket(t);
+  if (!u) DB.set('guesttix', [...DB.get('guesttix', []), t.id]);
+  c.step = null; c.draft = {}; S.tracked = t.id;
+  botSay(`Done — ticket ${t.id} has been created. ${u ? 'Follow the replies under Dashboard → Support tickets.' : 'Track it on the Support page with that number and your email.'}`, { link: u ? '#/dashboard/support/' + t.id : '#/support', linkText: 'View ticket' });
+}
+
+/* ---------- start ---------- */
+(async function init() {
+  await loadServer(); await ensureSeed(); if (SERVER) { setInterval(async () => { if (!Object.keys(pend).length) await loadServer(); }, 8000); } chatInit(); chatRender();
+  if (!location.hash) location.hash = '#/'; else render();
+  if (!location.hash || location.hash === '#/') render();
+  let lastUn = -1; setInterval(() => { const u = me(); const n = u ? unreadCount(u.id) : 0; if (n !== lastUn) { lastUn = n; const open = $('#umenu')?.classList.contains('open'); renderChrome(); if (open) $('#umenu')?.classList.add('open'); } }, 4000);
+})();
+</script>
+</body>
+</html>

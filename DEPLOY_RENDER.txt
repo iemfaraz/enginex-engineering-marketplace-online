@@ -1,0 +1,26 @@
+ENGINEX RENDER DEPLOYMENT
+
+1. Make sure ALL files of this repository are in the GitHub repository ROOT.
+2. In Render: New -> Blueprint, then select this GitHub repository.
+3. Render reads render.yaml and creates:
+   - enginex-engineering-marketplace (free Node web service)
+   - enginex-marketplace-db (free PostgreSQL, private to the web service)
+   - DATABASE_URL, ADMIN_EMAIL and a generated ADMIN_PASSWORD, all connected automatically
+4. Click Apply and wait for the deploy to finish.
+5. Open the generated https://<service>.onrender.com URL.
+
+ADMIN LOGIN
+  Email:    admin@enginex.com  (the ADMIN_EMAIL variable)
+  Password: Render -> your web service -> Environment -> ADMIN_PASSWORD -> Reveal
+To change the admin email or password, edit those variables there and save; the server
+applies them on the next start. There is no default password.
+
+The site starts empty. Sign in as admin, then add listings, or let employers register and post.
+
+NOTES
+- The free Render PostgreSQL database expires after 30 days. Upgrade it before relying on
+  the data permanently.
+- The free web service sleeps when idle; the first visit after a quiet period can take
+  about a minute.
+- Optional variables: BANK_NAME, BANK_ACCOUNT, BANK_IBAN (shown on the payments page),
+  MOYASAR_SECRET (card payments, not yet wired).
