@@ -1,0 +1,17 @@
+
+{
+  "name": "enginex-engineering-marketplace-online",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ENGINEX Engineering Marketplace",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
